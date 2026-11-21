@@ -21,7 +21,7 @@
     "description": "Swedish first aid, CPR and AED training for workplaces, schools, hospitals and organisations in Bangladesh, plus first aid kits, AEDs and emergency equipment.",
     "keywords": "first aid training Bangladesh, CPR training Dhaka, BLS course, AED Bangladesh, first aid kit, workplace safety training",
     "url": "https://firstaidswedenbd.com/",
-    "ogImage": "https://firstaidswedenbd.com/images/main-slider/FAS-1.jpg"
+    "ogImage": "images/main-slider/FAS-1.webp"
   },
   "nav": [
     {
@@ -61,21 +61,21 @@
         "title": "Preparedness",
         "emphasis": "saves lives.",
         "text": "Hands-on first aid, CPR and AED training built on more than three decades of Swedish practice.",
-        "image": "https://firstaidswedenbd.com/images/main-slider/FAS-1.jpg"
+        "image": "images/main-slider/FAS-1.webp"
       },
       {
         "kicker": "02 — Confidence",
         "title": "Empowering you",
         "emphasis": "to respond.",
         "text": "Step into a safer world with our first aid training and kits.",
-        "image": "https://firstaidswedenbd.com/images/main-slider/Image-2.jpg"
+        "image": "images/main-slider/Image-2.webp"
       },
       {
         "kicker": "03 — Equipment",
         "title": "A first aid kit for",
         "emphasis": "every situation.",
         "text": "AEDs, trauma and emergency equipment, bandages and CPR kits for workplaces and homes.",
-        "image": "https://firstaidswedenbd.com/images/main-slider/Image-3.jpg"
+        "image": "images/main-slider/Image-3.webp"
       }
     ],
     "primaryCta": {
@@ -92,87 +92,87 @@
     "items": [
       {
         "name": "Aggreko",
-        "logo": "https://firstaidswedenbd.com/images/clients/1.png",
+        "logo": "images/clients/1.webp",
         "url": "https://www.aggreko.com/"
       },
       {
         "name": "Tiger Cricket",
-        "logo": "https://firstaidswedenbd.com/images/clients/2.png",
+        "logo": "images/clients/2.webp",
         "url": "https://www.tigercricket.com.bd/"
       },
       {
         "name": "British High Commission Dhaka",
-        "logo": "https://firstaidswedenbd.com/images/clients/3.png",
+        "logo": "images/clients/3.webp",
         "url": "https://www.gov.uk/world/organisations/british-high-commission-dhaka"
       },
       {
         "name": "Bangladesh Coast Guard",
-        "logo": "https://firstaidswedenbd.com/images/clients/4.png",
+        "logo": "images/clients/4.webp",
         "url": "https://coastguard.gov.bd/"
       },
       {
         "name": "Embassy of Denmark",
-        "logo": "https://firstaidswedenbd.com/images/clients/5.png",
+        "logo": "images/clients/5.webp",
         "url": "https://bangladesh.um.dk/"
       },
       {
         "name": "European Resuscitation Council",
-        "logo": "https://firstaidswedenbd.com/images/clients/6.png",
+        "logo": "images/clients/6.webp",
         "url": "https://www.erc.edu/"
       },
       {
         "name": "European Union",
-        "logo": "https://firstaidswedenbd.com/images/clients/7.png",
+        "logo": "images/clients/7.webp",
         "url": "https://european-union.europa.eu/"
       },
       {
         "name": "GIZ",
-        "logo": "https://firstaidswedenbd.com/images/clients/8.jpg",
+        "logo": "images/clients/8.webp",
         "url": "https://www.giz.de/en/html/index.html"
       },
       {
         "name": "Nordic",
-        "logo": "https://firstaidswedenbd.com/images/clients/9.jpg",
+        "logo": "images/clients/9.webp",
         "url": "https://www.nordicbd.org/"
       },
       {
         "name": "Norway in Bangladesh",
-        "logo": "https://firstaidswedenbd.com/images/clients/10.png",
+        "logo": "images/clients/10.webp",
         "url": "https://www.norway.no/en/bangladesh"
       },
       {
         "name": "New Zealand Dairy",
-        "logo": "https://firstaidswedenbd.com/images/clients/11.png",
+        "logo": "images/clients/11.webp",
         "url": "https://www.newzealanddairybd.com/"
       },
       {
         "name": "Radiant Pharmaceuticals",
-        "logo": "https://firstaidswedenbd.com/images/clients/12.png",
+        "logo": "images/clients/12.webp",
         "url": "https://www.radiantpharmabd.com/"
       },
       {
         "name": "Reckitt",
-        "logo": "https://firstaidswedenbd.com/images/clients/13.png",
+        "logo": "images/clients/13.webp",
         "url": "https://reckitt.com/"
       },
       {
         "name": "Embassy of Sweden, Dhaka",
-        "logo": "https://firstaidswedenbd.com/images/clients/14.png",
+        "logo": "images/clients/14.webp",
         "url": "https://www.swedenabroad.se/en/embassies/bangladesh-dhaka"
       },
       {
         "name": "Embassy of Switzerland, Dhaka",
-        "logo": "https://firstaidswedenbd.com/images/clients/15.jpg",
+        "logo": "images/clients/15.webp",
         "url": "https://www.eda.admin.ch/countries/bangladesh/en/home/representations/embassy-in-dhaka.html"
       },
       {
         "name": "Transformative Urban Mobility Initiative",
-        "logo": "https://firstaidswedenbd.com/images/clients/16.png",
+        "logo": "images/clients/16.webp",
         "url": "https://transformative-mobility.org/"
       },
       {
         "name": "Partner",
-        "logo": "https://firstaidswedenbd.com/images/clients/17.png",
+        "logo": "images/clients/17.webp",
         "url": ""
       }
     ]
@@ -215,7 +215,7 @@
     "video": {
       "title": "See our training",
       "url": "https://youtu.be/R7tJ5TQ2sAg",
-      "poster": "https://firstaidswedenbd.com/images/resource/Image-4.jpg"
+      "poster": "images/resource/Image-4.webp"
     }
   },
   "stats": {
@@ -436,19 +436,19 @@
         {
           "name": "Lifeline AED",
           "type": "Semi-automatic",
-          "image": "https://firstaidswedenbd.com/images/resource/products/AED/Defibtech_Lifeline_Audio.png",
+          "image": "images/resource/products/AED/Defibtech_Lifeline_Audio.webp",
           "text": "Simple voice prompts guide any rescuer step by step."
         },
         {
           "name": "Lifeline VIEW",
           "type": "Semi-automatic",
-          "image": "https://firstaidswedenbd.com/images/resource/products/AED/Defibtech_Lifeline_View.png",
+          "image": "images/resource/products/AED/Defibtech_Lifeline_View.webp",
           "text": "Full-colour video screen shows each step on the display."
         },
         {
           "name": "Lifeline PRO",
           "type": "Manual override",
-          "image": "https://firstaidswedenbd.com/images/resource/products/AED/Defibtech_Lifeline_Pro.png",
+          "image": "images/resource/products/AED/Defibtech_Lifeline_Pro.webp",
           "text": "For professional responders, with manual mode and ECG display."
         }
       ]
@@ -535,14 +535,14 @@
         "category": "Training",
         "date": "",
         "summary": "Learners practising CPR, AED and first aid skills with our instructors.",
-        "thumb": "https://firstaidswedenbd.com/images/gallery/training/1.jpg",
+        "thumb": "images/gallery/training/1.webp",
         "images": [
-          "https://firstaidswedenbd.com/images/gallery/training/1.jpg",
-          "https://firstaidswedenbd.com/images/gallery/training/2.jpg",
-          "https://firstaidswedenbd.com/images/gallery/training/3.jpg",
-          "https://firstaidswedenbd.com/images/gallery/training/4.jpg",
-          "https://firstaidswedenbd.com/images/gallery/training/5.jpg",
-          "https://firstaidswedenbd.com/images/gallery/training/6.jpg"
+          "images/gallery/training/1.webp",
+          "images/gallery/training/2.webp",
+          "images/gallery/training/3.webp",
+          "images/gallery/training/4.webp",
+          "images/gallery/training/5.webp",
+          "images/gallery/training/6.webp"
         ],
         "link": "",
         "logo": "",
@@ -555,12 +555,12 @@
         "category": "Training",
         "date": "",
         "summary": "Theory and practice side by side.",
-        "thumb": "https://firstaidswedenbd.com/images/main-slider/FAS-1.jpg",
+        "thumb": "images/main-slider/FAS-1.webp",
         "images": [
-          "https://firstaidswedenbd.com/images/main-slider/FAS-1.jpg",
-          "https://firstaidswedenbd.com/images/main-slider/Image-2.jpg",
-          "https://firstaidswedenbd.com/images/main-slider/Image-3.jpg",
-          "https://firstaidswedenbd.com/images/resource/Image-4.jpg"
+          "images/main-slider/FAS-1.webp",
+          "images/main-slider/Image-2.webp",
+          "images/main-slider/Image-3.webp",
+          "images/resource/Image-4.webp"
         ],
         "link": "",
         "logo": "",
@@ -573,10 +573,10 @@
         "category": "Events",
         "date": "",
         "summary": "Awareness events and demonstrations.",
-        "thumb": "https://firstaidswedenbd.com/images/gallery/event/1.jpg",
+        "thumb": "images/gallery/event/1.webp",
         "images": [
-          "https://firstaidswedenbd.com/images/gallery/event/1.jpg",
-          "https://firstaidswedenbd.com/images/gallery/event/2.jpg"
+          "images/gallery/event/1.webp",
+          "images/gallery/event/2.webp"
         ],
         "link": "",
         "logo": "",
@@ -589,15 +589,15 @@
         "category": "Products",
         "date": "",
         "summary": "Kits and equipment we supply.",
-        "thumb": "https://firstaidswedenbd.com/images/gallery/product/1.png",
+        "thumb": "images/gallery/product/1.webp",
         "images": [
-          "https://firstaidswedenbd.com/images/gallery/product/1.png",
-          "https://firstaidswedenbd.com/images/gallery/product/2.png",
-          "https://firstaidswedenbd.com/images/gallery/product/3.png",
-          "https://firstaidswedenbd.com/images/gallery/product/4.png",
-          "https://firstaidswedenbd.com/images/gallery/product/5.png",
-          "https://firstaidswedenbd.com/images/gallery/product/6.png",
-          "https://firstaidswedenbd.com/images/gallery/product/7.png"
+          "images/gallery/product/1.webp",
+          "images/gallery/product/2.webp",
+          "images/gallery/product/3.webp",
+          "images/gallery/product/4.webp",
+          "images/gallery/product/5.webp",
+          "images/gallery/product/6.webp",
+          "images/gallery/product/7.webp"
         ],
         "link": "",
         "logo": "",
@@ -620,42 +620,42 @@
       {
         "name": "Jonas Wikström",
         "role": "CEO & Founder",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/CEO-200x300.jpeg",
+        "photo": "images/resource/team/CEO-200x300.webp",
         "bio": "Specialist in anaesthesia and intensive care with more than 25 years in pre-hospital and emergency medicine. Founded the company in 1989, master trainer for the Swedish Resuscitation Council since 1992, and author of three books on emergency medicine.",
         "linkedin": ""
       },
       {
         "name": "Ahmed Sabbir Naihan",
         "role": "Country Manager",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/Country-Manager-Of-Bangladesh-169x300.jpeg",
+        "photo": "images/resource/team/Country-Manager-Of-Bangladesh-169x300.webp",
         "bio": "Former Bangladesh Navy officer who joined in April 2019. Holds master's degrees in business administration, law and governance.",
         "linkedin": ""
       },
       {
         "name": "Dr. Fazle Rabbani Sajib",
         "role": "Training Instructor",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/Doctor-1-254x300.jpg",
+        "photo": "images/resource/team/Doctor-1-254x300.webp",
         "bio": "MBBS and MPH. BLS instructor trained by the Swedish CPR council, teaching in fluent Bangla and English.",
         "linkedin": ""
       },
       {
         "name": "S M Hossain Ahmed",
         "role": "Manager, Logistics",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/Hossain-241x300.jpg",
+        "photo": "images/resource/team/Hossain-241x300.webp",
         "bio": "With the team since 2017 and more than 20 years of work experience.",
         "linkedin": ""
       },
       {
         "name": "Ridwan Ul Islam",
         "role": "Head of Marketing",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/Ridwan.jpg",
+        "photo": "images/resource/team/Ridwan.webp",
         "bio": "With the team since 2018 and more than 10 years of experience.",
         "linkedin": ""
       },
       {
         "name": "Raisul Islam",
         "role": "Accounts Manager & Admin",
-        "photo": "https://firstaidswedenbd.com/images/resource/team/Md%20Raisul%20Islam%20Bhuyan.png",
+        "photo": "images/resource/team/Md-Raisul-Islam-Bhuyan.webp",
         "bio": "With the team since 2020; partly ACCA qualified.",
         "linkedin": ""
       }
