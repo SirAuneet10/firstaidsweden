@@ -49,6 +49,10 @@
       "target": "team"
     },
     {
+      "label": "Certificate",
+      "target": "certificate"
+    },
+    {
       "label": "Contact",
       "target": "contact"
     }
@@ -298,9 +302,9 @@
         "topics": "In-transit emergencies, CPR and AED, choking, sudden illness"
       }
     ],
-    "image": "images/ai-cpr-class.png",
-    "imageAlt": "Instructor teaching CPR on a manikin to a small group",
-    "imageCaption": "AI illustration"
+    "image": "images/gallery/training/3.webp",
+    "imageAlt": "Learners practising CPR on a manikin during one of our courses",
+    "imageCaption": "Hands-on CPR practice"
   },
   "modules": {
     "eyebrow": "What you'll learn",
@@ -508,14 +512,14 @@
     ],
     "banners": [
       {
-        "image": "images/ai-aed-wall.png",
-        "alt": "AED in a wall cabinet next to a first aid kit",
-        "caption": "AI illustration"
+        "image": "images/gallery/product/2.webp",
+        "alt": "Defibtech Lifeline VIEW AED",
+        "caption": "Defibtech Lifeline VIEW"
       },
       {
-        "image": "images/ai-first-aid-kit.png",
-        "alt": "Open first aid kit with bandages, gloves and scissors",
-        "caption": "AI illustration"
+        "image": "images/gallery/product/7.webp",
+        "alt": "Tourniquet for severe bleeding",
+        "caption": "Tourniquet"
       }
     ]
   },
@@ -681,6 +685,8 @@
     "text": "Fill in the form and our team will contact you. Your answers go straight to our training team.",
     "successTitle": "Thank you!",
     "successText": "We've received your enrolment and will contact you soon.",
+    "sheetEndpoint": "",
+    "sheetViewUrl": "https://docs.google.com/spreadsheets/d/1a581dhW6RsD05CXHsh9Sm4XXN_ONLc5_HWZLH19nw9k/edit",
     "googleForm": {
       "viewUrl": "https://forms.gle/N34DQYXfDfVgctTY6",
       "actionUrl": "https://docs.google.com/forms/d/e/1FAIpQLSextw28b2WJuWbviJFXAR5FnmZe0Va4wRhp1Jh7jherBcskuQ/formResponse",
@@ -690,42 +696,48 @@
           "entry": "103526039",
           "type": "text",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Full name"
         },
         {
           "label": "Contact number",
           "entry": "884063740",
           "type": "tel",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Contact number"
         },
         {
           "label": "Email",
           "entry": "2024842802",
           "type": "email",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Email"
         },
         {
           "label": "Address",
           "entry": "214880192",
           "type": "text",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Address"
         },
         {
           "label": "Date of birth",
           "entry": "907343671",
           "type": "date",
           "required": false,
-          "options": []
+          "options": [],
+          "column": "Date of birth"
         },
         {
           "label": "Occupation",
           "entry": "625264817",
           "type": "text",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Occupation"
         },
         {
           "label": "Have you attended first aid training with us before?",
@@ -735,7 +747,8 @@
           "options": [
             "Yes",
             "No"
-          ]
+          ],
+          "column": "Attended before?"
         },
         {
           "label": "How did you hear about us?",
@@ -750,7 +763,8 @@
             "Relative",
             "Website",
             "Email"
-          ]
+          ],
+          "column": "How did you hear about us?"
         },
         {
           "label": "Enrolling as",
@@ -761,30 +775,65 @@
             "Individual",
             "Group",
             "Organization"
-          ]
+          ],
+          "column": "Enrolling as"
         },
         {
           "label": "Preferred training date",
           "entry": "315890962",
           "type": "date",
           "required": true,
-          "options": []
+          "options": [],
+          "column": "Preferred training date"
         },
         {
           "label": "Any expectations or goals for this training?",
           "entry": "172547358",
           "type": "textarea",
           "required": false,
-          "options": []
+          "options": [],
+          "column": "Expectations / goals"
         },
         {
           "label": "Any question or information to share",
           "entry": "1190193636",
           "type": "textarea",
           "required": false,
-          "options": []
+          "options": [],
+          "column": "Questions / information"
         }
       ]
+    }
+  },
+  "certificate": {
+    "eyebrow": "Certificates",
+    "title": "Trained with us? Claim your certificate.",
+    "text": "After your training we email you a unique certificate code. Enter it below, choose a login ID and password, and your certificate is ready to view and download as a PDF. Groups and organisations work the same way.",
+    "endpoint": "",
+    "sheetViewUrl": "https://docs.google.com/spreadsheets/d/15lU6or9LtVkDoktbWLT-jW6YhdSbOtUYpTQcjqV3JMI/edit",
+    "title1": "Certificate",
+    "title2": "of Completion",
+    "issuer": "First Aid Centre of Sweden, Bangladesh",
+    "issuerLine": "Part of Första Hjälpencentrum, Sweden · training since 1989",
+    "signatories": [
+      {
+        "name": "Jonas Wikström",
+        "role": "CEO & Founder"
+      },
+      {
+        "name": "Ahmed Sabbir Naihan",
+        "role": "Country Manager, Bangladesh"
+      }
+    ],
+    "demo": {
+      "code": "DEMO-2026",
+      "name": "Your Name Here",
+      "org": "Your Organisation",
+      "type": "Individual",
+      "course": "First Aid, CPR & AED (Basic Life Support)",
+      "date": "15 December 2026",
+      "trainer": "Dr. Fazle Rabbani Sajib",
+      "validUntil": "15 December 2028"
     }
   },
   "contact": {

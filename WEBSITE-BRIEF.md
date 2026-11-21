@@ -31,6 +31,7 @@
 | 13 | **Gallery** | Albums grouped by category with filters, drag-to-scroll strips, a photo wall, and a full-screen viewer with swipe, thumbnails and in-page video. **Can be fed from Google Drive folders** |
 | 14 | **Team** | 6 people. Hovering a name shows a floating photo (desktop); clicking opens their bio |
 | 15 | **Enrol / Enquire** | A 3-step enrolment form connected to the company's **existing Google Form**, so answers land in Google Sheets and download as **Excel**. Call, WhatsApp, Email and Visit buttons each open a **QR-code popup** |
+| 15b | **Claim certificate** | Trainees enter the unique code from their email, choose a login ID and password, then view their certificate and **download it as a PDF**. Includes a demo certificate, a QR code to check it's genuine (`#verify=CODE`), and multiple certificates per login. Codes and emails are sent from a private Google Sheet |
 | 16 | **Find us** | Address, phones, email, hours, social links, and a Google Map that loads on request |
 | 17 | **Footer** | Giant "FIRST AID" wordmark with hover animation, links and contact |
 

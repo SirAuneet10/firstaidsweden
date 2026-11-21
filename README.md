@@ -7,12 +7,12 @@ A static website with no build step. It's made of these files:
 | `index.html` | The whole website: design, animations and the first-aid avatar scenes |
 | `content.json` | **All the words, photos, numbers, links and colours.** This is the only file you change to update the site. |
 | `admin.js` | The admin panel. It only loads when someone opens `yoursite.com/#admin`, so visitors never download it. |
-| `parts/lab-scenes.js` | The animated first-aid avatars (CPR, AED, recovery position, choking, bleeding, burns) |
-| `images/` | Local images (currently the 3 AI illustrations) |
+| `google-sheet-script.gs` / `certificates-script.gs` | Code to paste into the two Google Sheets (not uploaded to GitHub) |
+| `images/` | All photos and logos, compressed |
 | `backups/` | Earlier versions of the design. You don't need to upload this folder. |
 | `README.md` | This guide |
 
-**Upload everything except `backups/` and `company-brief.md`.** On GitHub, drag the `parts` and `images` folders in as folders.
+**Upload `index.html`, `content.json`, `admin.js`, `README.md` and the whole `images` folder.** (The avatar animations are built into index.html, so the `parts` folder is only a source copy.)
 
 ---
 
@@ -96,7 +96,32 @@ You can also paste a Drive folder link into a single album's **Drive folder** fi
 
 ---
 
-## 4. Enrolment form: answers arrive in Excel
+## 4. Enrolment form: your own live Google Sheet
+
+Every enrolment from the website becomes a new row in **"First Aid Centre of Sweden – Website Enrolments"** in your Google Drive:
+https://docs.google.com/spreadsheets/d/1a581dhW6RsD05CXHsh9Sm4XXN_ONLc5_HWZLH19nw9k/edit
+
+**One-time setup (about 5 minutes, on a computer):**
+1. Open the sheet link above (signed in to the Google account that owns it).
+2. Click **Extensions → Apps Script**. A code editor opens.
+3. Delete everything in it, then paste the whole contents of `google-sheet-script.gs` (in this project folder). Click the 💾 **Save** icon.
+4. Click **Deploy → New deployment**. Click the ⚙️ gear next to "Select type" and choose **Web app**.
+   - Description: `Website enrolments`
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+   - Click **Deploy**.
+5. Google asks for permission: click **Authorize access**, choose your account, then **Advanced → Go to … (unsafe) → Allow**. This is normal for your own scripts, and it only lets the script add rows to this sheet.
+6. Copy the **Web app URL** (it starts with `https://script.google.com/macros/s/…/exec`).
+7. Open the website's admin panel (`#admin`), go to **Enquiry → Sheet endpoint**, paste the URL, then download and publish `content.json`.
+8. Test it: fill in the form on the live website. A new row appears in the sheet within a few seconds.
+
+**Share it with your client:** in the sheet click **Share**, add your client's email and set them to **Viewer**. They see new enrolments live, and can't edit or delete anything. (Avoid "Anyone with the link", because the sheet contains people's phone numbers and emails.)
+
+**Excel:** in the sheet, **File → Download → Microsoft Excel (.xlsx)**.
+
+The website also still sends each enrolment to the company's original Google Form as a backup copy.
+
+### The original Google Form (backup copy)
 
 The enrolment form on the website sends answers **straight into your existing Google Form** ("First Aid, CPR, BLS Training"). The fields are already connected.
 
@@ -111,6 +136,30 @@ The enrolment form on the website sends answers **straight into your existing Go
 2. Paste the link somewhere. You'll see parts like `entry.103526039=...`. The number after `entry.` is that question's ID.
 3. In the admin panel, put each ID in the matching field's **Entry** box.
 4. Make sure the form is open to everyone: in Google Forms **Settings → Responses**, turn **off** "Restrict to users in your organisation" and "Collect email addresses: verified".
+
+---
+
+## 4b. Certificates (claim with a code, view and download as PDF)
+
+Certificates live in a **separate, private** Google Sheet that only you own: **"First Aid Centre of Sweden – Certificates (PRIVATE)"**
+https://docs.google.com/spreadsheets/d/15lU6or9LtVkDoktbWLT-jW6YhdSbOtUYpTQcjqV3JMI/edit
+**Do not share this one by link.** It holds login data.
+
+**One-time setup (about 5 minutes):**
+1. Open the Certificates sheet and click **Extensions → Apps Script**. Paste the whole of `certificates-script.gs` and click **Save**.
+2. In the script, check the line `var SITE_URL = 'https://firstaidswedenbd.com/';`. It's used in the emails, so make sure it's your website address.
+3. Click **Deploy → New deployment → Web app**. Set *Execute as: Me* and *Who has access: Anyone*, click **Deploy**, then allow the permissions (it needs to send email from your account).
+4. Copy the **Web app URL**. In the admin panel, go to **Certificate → Endpoint**, paste it, then publish `content.json`.
+5. Reload the sheet. A new menu **🎓 Certificates** appears.
+
+**After each training:**
+1. Add one row per person, group or organisation: *Full name*, *Organisation / group*, *Type* (Individual / Group / Organization), *Course*, *Training date*, *Trainer*, *Valid until*, *Email*. Leave the other columns empty.
+2. Click **🎓 Certificates → Email codes to new rows**. Each new row gets a unique code (like `FACS-7K3P-Q9XD-M2RT`) and an email with a "Claim your certificate" button.
+3. On the website (**Certificate** section) they enter the code, choose a login ID (email or phone) and a password, then see their certificate and **Download PDF**. Next time they use **I have an account**. One login can hold several certificates.
+4. Every certificate has a QR code. Scanning it opens `yoursite.com/#verify=CODE`, which shows whether it's genuine.
+
+**Demo:** anyone can click "See a demo certificate", or enter the code `DEMO-2026`. The demo is watermarked.
+**Forgot password?** In the sheet, clear that person's *Account ID*, *Password hash* and *Claimed at* cells. They can then claim again with the same code.
 
 ---
 
