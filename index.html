@@ -220,13 +220,13 @@ body.menu-open .burger span:last-child{transform:translateY(-3px) rotate(-45deg)
 .marq h2{font:600 13px/1 var(--fd);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:32px}
 .mrow{display:flex;width:max-content;gap:16px;padding:8px 0}
 .mrow.r2{margin-top:8px}
-.mrow{animation:mq 70s linear infinite;will-change:transform;contain:layout paint}.mrow.r2{animation-direction:reverse;animation-duration:80s}.marq:hover .mrow,.marq.off .mrow,.vw.off .vrow{animation-play-state:paused}
+.mrow{animation:mq 34s linear infinite;will-change:transform;contain:layout paint}.mrow.r2{animation-direction:reverse;animation-duration:38s}.marq:hover .mrow,.marq.off .mrow,.vw.off .vrow{animation-play-state:paused}
 .vrow{animation:mq 38s linear infinite;will-change:transform;contain:layout paint}.vrow.r2{animation-direction:reverse;animation-duration:44s}
 @keyframes mq{to{transform:translate3d(-50%,0,0)}}
 .logo-tile{display:flex;align-items:center;gap:14px;height:84px;padding:0 24px 0 12px;border-radius:20px;background:#fff;box-shadow:0 1px 0 var(--line),0 10px 30px -20px rgba(10,15,44,.3);text-decoration:none;flex:none;transition:transform .4s var(--ease-o)}
 .logo-tile:hover{transform:translateY(-4px)}
-.logo-tile img{width:60px;height:60px;object-fit:contain;filter:grayscale(1);opacity:.75;transition:filter .4s,opacity .4s}
-.logo-tile:hover img{filter:none;opacity:1}
+.logo-tile img{width:60px;height:60px;object-fit:contain;transition:transform .4s var(--ease-o)}
+.logo-tile:hover img{transform:scale(1.1)}
 .logo-tile span{font:600 15px/1.2 var(--fd);white-space:nowrap;color:var(--text)}
 
 /* ---------- about ---------- */
@@ -335,11 +335,31 @@ html.no-pin .hbar{display:none}
 
 /* ---------- guides ---------- */
 .ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
-.gcard{position:relative;border-radius:26px;padding:26px;background:#fff;box-shadow:0 1px 0 var(--line),0 24px 50px -40px rgba(10,15,44,.45);overflow:hidden;outline:0;transition:transform .5s var(--ease-o),box-shadow .5s;cursor:pointer;isolation:isolate}
+.gcard{position:relative;border-radius:26px;padding:20px 22px 22px;background:#fff;box-shadow:0 1px 0 var(--line),0 24px 50px -40px rgba(10,15,44,.45);overflow:hidden;outline:0;transition:transform .5s var(--ease-o),box-shadow .5s;cursor:pointer;isolation:isolate}
 .gcard::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,var(--primary),#141B4A);clip-path:circle(0% at 40px 40px);transition:clip-path .7s var(--ease)}
 .gcard.play{transform:translateY(-6px);color:#fff;box-shadow:0 30px 60px -30px rgba(40,48,144,.7)}
 .gcard.play::before{clip-path:circle(150% at 40px 40px)}
 .gcard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.gstage{position:relative;aspect-ratio:3/2;margin:-10px -10px 18px;border-radius:18px;overflow:hidden;background:radial-gradient(120% 90% at 50% 20%,#1D2766,#0A0F2C 70%)}
+.gscene{position:absolute;inset:0;display:grid;place-items:center}
+.gscene svg{width:100%;height:100%}
+.gposter{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:14px;color:#fff;transition:opacity .4s,transform .5s var(--ease-o)}
+.gposter::before,.gposter::after{content:"";position:absolute;left:50%;top:42%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;border:2px solid rgba(248,176,64,.5);animation:gpulse 2.4s var(--ease-o) infinite}
+.gposter::after{animation-delay:1.2s}
+@keyframes gpulse{from{transform:scale(.7);opacity:1}to{transform:scale(1.9);opacity:0}}
+.gico.big{width:72px;height:72px;border-radius:22px;position:relative;z-index:1}
+.gico.big .i{width:34px;height:34px}
+.gplay{display:inline-flex;align-items:center;gap:8px;font:600 13px/1 var(--fd);letter-spacing:.06em;text-transform:uppercase;color:#C9CEF2;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.08)}
+.gplay .i{width:14px;height:14px}
+.gcard.play .gposter{opacity:0;transform:scale(1.15);pointer-events:none}
+.gstage .gnum{position:absolute;left:14px;top:12px;font:700 13px/1 var(--fd);letter-spacing:.1em;color:rgba(255,255,255,.55)}
+.gcnt{position:absolute;right:12px;top:10px;font:700 13px/1 var(--fd);color:var(--accent);background:rgba(10,15,44,.7);padding:8px 11px;border-radius:999px;opacity:0;transition:opacity .3s;font-variant-numeric:tabular-nums}
+.gcnt.on{opacity:1}
+.mbox.avbox{width:min(760px,100%);background:var(--ink);color:#fff}
+.mbox.avbox .x{background:rgba(255,255,255,.15);color:#fff}
+.astage{position:relative;aspect-ratio:3/2;border-radius:20px;overflow:hidden;margin:16px 0;background:radial-gradient(120% 90% at 50% 20%,#1D2766,#0A0F2C 70%)}
+.ascene{position:absolute;inset:0}.ascene svg{width:100%;height:100%}
+.asteps li{padding:14px 14px 14px 62px}.asteps li::before{left:14px}
 .gtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .gico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--emergency);color:#fff}
 .gico .i{width:26px;height:26px}
@@ -882,30 +902,66 @@ const GUIDE_ICON = { cpr: 'heart', aed: 'zap', recovery: 'bed', choking: 'wind',
 function bGuides(c) {
   const l = c.lab;
   return `<section id="guides" class="sec"><div class="wrap">
-    <p class="eyebrow">First aid in 4 steps</p><h2 class="h2" data-r="up">Hover. Tap. <em class="s">Learn.</em></h2>
-    <p class="lead muted" style="margin-top:24px">Each card plays its steps one by one. Tap <b>Watch</b> to see the animated version.</p>
-    <div class="ggrid">${l.scenes.map((s, i) => `<article class="gcard" tabindex="0" data-i="${i}" aria-label="${attr(s.title)} steps">
-      <div class="gtop"><span class="gico">${ic(GUIDE_ICON[s.id] || 'heart')}</span><span class="gnum">${String(i + 1).padStart(2, '0')} / ${String(l.scenes.length).padStart(2, '0')}</span></div>
+    <p class="eyebrow">First aid in 4 steps</p><h2 class="h2" data-r="up">Hover. Tap. <em class="s">Watch &amp; learn.</em></h2>
+    <p class="lead muted" style="margin-top:24px">${FINE ? 'Hover over' : 'Tap'} any situation and an animated first-aider shows you exactly what to do, step by step.</p>
+    <div class="ggrid">${l.scenes.map((s, i) => `<article class="gcard" tabindex="0" data-i="${i}" data-id="${attr(s.id)}" aria-label="${attr(s.title)}: animated steps">
+      <div class="gstage">
+        <div class="gscene" aria-hidden="true"></div>
+        <div class="gposter"><span class="gico big">${ic(GUIDE_ICON[s.id] || 'heart')}</span><span class="gplay">${ic('play')} ${FINE ? 'Hover to watch' : 'Tap to watch'}</span></div>
+        <span class="gnum">${String(i + 1).padStart(2, '0')}</span><span class="gcnt"></span>
+      </div>
       <h3>${esc(s.title)}</h3>
       <div class="gbar" aria-hidden="true">${s.steps.map(() => '<i></i>').join('')}</div>
       <ol class="gsteps">${s.steps.map((x, k) => `<li><b>${k + 1}</b><span>${esc(x)}</span></li>`).join('')}</ol>
-      <div class="ghint"><span>${FINE ? 'Hover to play' : 'Tap to play'}</span><button class="gwatch" data-watch="${i}">${ic('play')} Watch</button></div>
+      <div class="ghint"><span class="gstate">${FINE ? 'Hover to play' : 'Tap to play'}</span><button class="gwatch" data-watch="${i}">${ic('play')} Full screen</button></div>
     </article>`).join('')}</div></div></section>`;
 }
-function initGuides() {
+function avatarOK(id) { return window.FALab && FALab.mount && (FALab.ids || []).includes(id); }
+function initGuides(c) {
+  const scenes = c.lab.scenes;
   $$('.gcard').forEach(card => {
-    const lis = $$('.gsteps li', card), bars = $$('.gbar i', card); let k = -1, tm = 0;
+    const s = scenes[+card.dataset.i], lis = $$('.gsteps li', card), bars = $$('.gbar i', card), sceneEl = $('.gscene', card), cnt = $('.gcnt', card), stateEl = $('.gstate', card);
+    let k = -1, tm = 0, ctrl = null;
     const paint = () => { lis.forEach((li, n) => { li.classList.toggle('g-cur', n === k); li.classList.toggle('g-done', n < k); }); bars.forEach((b, n) => { b.classList.toggle('g-done', n < k); b.classList.remove('g-cur'); if (n === k) { void b.offsetWidth; b.classList.add('g-cur'); } }); };
-    const step = () => { k++; if (k >= lis.length) { k = lis.length; paint(); tm = setTimeout(() => { k = -1; step(); }, 1400); return; } paint(); tm = setTimeout(step, 1600); };
-    const start = () => { if (card.classList.contains('play')) return; $$('.gcard.play').forEach(o => o !== card && o.__stop && o.__stop()); card.classList.add('play'); k = -1; step(); };
-    const stop = () => { clearTimeout(tm); card.classList.remove('play'); k = -1; paint(); };
+    const step = () => { k++; if (k >= lis.length) { k = lis.length; paint(); tm = setTimeout(() => { k = -1; step(); }, 1400); return; } paint(); tm = setTimeout(step, 2200); };
+    const start = () => {
+      if (card.classList.contains('play')) return;
+      $$('.gcard.play').forEach(o => o !== card && o.__stop && o.__stop());
+      card.classList.add('play'); stateEl.textContent = 'Playing…'; k = -1;
+      if (avatarOK(s.id)) {
+        try { ctrl = FALab.mount(sceneEl, s.id, { mini: true, onStep: i => { k = i; paint(); }, onCount: n => { cnt.textContent = n + ' / 30'; cnt.classList.toggle('on', n > 0 && n < 30); } }); }
+        catch (e) { console.warn(e); ctrl = null; step(); }
+      } else step();
+    };
+    const stop = () => {
+      clearTimeout(tm); card.classList.remove('play'); k = -1; paint(); cnt.classList.remove('on'); stateEl.textContent = FINE ? 'Hover to play' : 'Tap to play';
+      if (ctrl) { try { ctrl.destroy(); } catch (e) {} ctrl = null; } sceneEl.innerHTML = '';
+    };
     card.__stop = stop;
     if (FINE) { on(card, 'mouseenter', start); on(card, 'mouseleave', stop); }
-    on(card, 'focus', start); on(card, 'blur', e => { if (!card.contains(e.relatedTarget)) stop(); });
-    on(card, 'click', e => { if (e.target.closest('.gwatch')) { e.stopPropagation(); stop(); goTo('lab'); setTimeout(() => labSwap && labSwap(+card.dataset.i), RM ? 50 : 700); return; } if (!FINE) card.classList.contains('play') ? stop() : start(); });
-    on(card, 'keydown', e => { if (e.key === 'Enter') start(); });
-    later(() => clearTimeout(tm));
+    on(card, 'focus', () => { if (card.matches(':focus-visible')) start(); }); on(card, 'blur', e => { if (!card.contains(e.relatedTarget)) stop(); });
+    on(card, 'click', e => {
+      if (e.target.closest('.gwatch')) { e.stopPropagation(); stop(); openAvatar(s); return; }
+      if (!FINE) card.classList.contains('play') ? stop() : start();
+    });
+    on(card, 'keydown', e => { if (e.key === 'Enter' && e.target === card) start(); if (e.key === 'Escape') stop(); });
+    later(stop);
   });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting && e.target.__stop && e.target.classList.contains('play')) e.target.__stop(); }), { threshold: 0 });
+  $$('.gcard').forEach(cd => io.observe(cd)); later(() => io.disconnect());
+}
+function openAvatar(s) {
+  const m = modal(`<h3 style="color:#fff">${esc(s.title)}</h3><div class="astage"><div class="ascene"></div><span class="gcnt"></span></div>
+    <ol class="steps asteps">${s.steps.map(x => `<li><span>${esc(x)}</span><i></i></li>`).join('')}</ol>
+    <p class="discl" style="margin-top:14px">${ic('alert')}<span>For awareness only. Book a certified course to practise hands-on. In an emergency in Bangladesh, call 999.</span></p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><a class="btn" href="#enquiry" data-go="enquiry">Book a course ${ic('arrow')}</a></div>`, 'avbox');
+  const lis = $$('.asteps li', m.el), cnt = $('.astage .gcnt', m.el);
+  const setStep = i => lis.forEach((li, k) => { li.classList.toggle('on', k === i); if (k === i) { const b = li.querySelector('i'); b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; } });
+  let ctrl = null;
+  if (avatarOK(s.id)) ctrl = FALab.mount($('.ascene', m.el), s.id, { onStep: setStep, onCount: n => { cnt.textContent = n + ' / 30'; cnt.classList.toggle('on', n > 0 && n < 30); } });
+  else { let k = 0; setStep(0); const iv = setInterval(() => setStep(k = (k + 1) % lis.length), 3000); ctrl = { destroy: () => clearInterval(iv) }; }
+  $('[data-go]', m.el).addEventListener('click', () => m.close());
+  const watch = setInterval(() => { if (!m.el.isConnected) { clearInterval(watch); try { ctrl && ctrl.destroy(); } catch (e) {} } }, 400);
 }
 let labSwap = null;
 function bLab(c) {
@@ -1065,7 +1121,7 @@ function fabs(c) {
 /* ================= INIT ================= */
 function initAll(c) {
   initHeader(c); initHero(c); initReveals(); initMarquee(); initAbout(); initStats(); initTraining(); initWords(); initModules();
-  initGuides(); loadDrive(c); initLab(c); initTrainer(); initEquipment(c); initGallery(c); initTeam(c); initForm(c); initContact(c); initMagnetic(); initTilt(); initLifeline(); initBanners(); initFooter();
+  initGuides(c); loadDrive(c); initLab(c); initTrainer(); initEquipment(c); initGallery(c); initTeam(c); initForm(c); initContact(c); initMagnetic(); initTilt(); initLifeline(); initBanners(); initFooter();
   if (ST) { ST.refresh(); }
 }
 function goTo(id) {
