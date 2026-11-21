@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FALab scene test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --amber: #F8B040; --red: #E63946; --ice: #EEF1FF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #060924; color: #EEF1FF; font-family: 'Familjen Grotesk', system-ui, sans-serif; padding: 24px; }
+  h1 { font-size: 20px; margin: 0 0 16px; letter-spacing: .02em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 20px; }
+  .card { background: linear-gradient(160deg, #0A0F2C, #141B4A); border-radius: 22px; padding: 14px 14px 16px; border: 1px solid rgba(238,241,255,.08); }
+  .card h2 { margin: 2px 6px 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #F8B040; }
+  .stage { aspect-ratio: 3 / 2; }
+  .cap { display: flex; gap: 10px; align-items: baseline; margin: 10px 6px 0; min-height: 22px; font-size: 15px; }
+  .cap b { color: #F8B040; font-variant-numeric: tabular-nums; }
+  .cnt { margin-left: auto; color: rgba(238,241,255,.6); font-variant-numeric: tabular-nums; }
+  .controls { margin: 0 0 16px; display: flex; gap: 8px; }
+  button { background: #1B2360; color: #EEF1FF; border: 1px solid rgba(238,241,255,.15); padding: 6px 12px; border-radius: 10px; font: inherit; cursor: pointer; }
+  body.single .grid { grid-template-columns: 1fr; max-width: 900px; }
+</style>
+</head>
+<body>
+<h1>FALab — first-aid avatar scenes</h1>
+<div class="controls"><button id="pause">Pause all</button><button id="play">Play all</button><button id="restart">Restart all</button></div>
+<div class="grid" id="grid"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="lab-scenes.js"></script>
+<script>
+  var CAPS = {
+    cpr: ['Check for danger and response', 'Call 999 and get an AED', '30 chest compressions at 100–120/min', '2 rescue breaths'],
+    aed: ['Switch on the AED', 'Attach the pads to the bare chest', 'Analysing… stand clear', 'Shock, then resume CPR'],
+    recovery: ['Near arm out at a right angle', 'Far hand against the near cheek', 'Bend the far knee', 'Roll onto the side, open the airway'],
+    choking: ['Encourage coughing', '5 back blows', '5 abdominal thrusts', 'Object cleared'],
+    bleeding: ['Put on gloves', 'Apply firm pressure with a pad', 'Bandage the wound', 'Call 999'],
+    burns: ['Move away from the heat', 'Cool under running water for 20 min', 'Remove rings and jewellery', 'Cover loosely with cling film']
+  };
+  var params = new URLSearchParams(location.search);
+  var only = params.get('scene');
+  if (only) document.body.classList.add('single');
+  window.ctrls = {};
+  window.stepLog = [];
+  FALab.ids.filter(function (id) { return !only || id === only; }).forEach(function (id) {
+    var card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + id;
+    card.innerHTML = '<h2>' + id + '</h2><div class="stage"></div><div class="cap"><b class="n">1</b><span class="t"></span><span class="cnt"></span></div>';
+    document.getElementById('grid').appendChild(card);
+    var t = card.querySelector('.t'), n = card.querySelector('.n'), c = card.querySelector('.cnt');
+    window.ctrls[id] = FALab.mount(card.querySelector('.stage'), id, {
+      onStep: function (i) { n.textContent = (i + 1) + '/4'; t.textContent = CAPS[id][i]; c.textContent = ''; window.stepLog.push(id + ':' + i); },
+      onCount: function (k) { c.textContent = k + ' / 30'; }
+    });
+  });
+  document.getElementById('pause').onclick = function () { for (var k in ctrls) ctrls[k].pause(); };
+  document.getElementById('play').onclick = function () { for (var k in ctrls) ctrls[k].play(); };
+  document.getElementById('restart').onclick = function () { for (var k in ctrls) ctrls[k].restart(); };
+</script>
+</body>
+</html>
