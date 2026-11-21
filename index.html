@@ -285,11 +285,36 @@ body.menu-open .burger span:last-child{transform:translateY(-3px) rotate(-45deg)
 @keyframes nudge{50%{transform:translateX(8px)}}
 .sector{flex:none;width:min(380px,80vw);min-height:min(560px,70vh);border-radius:28px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(160deg,var(--ink-2),#0D1238);border:1px solid rgba(255,255,255,.08);transition:border-color .4s}
 .sector:hover{border-color:rgba(248,176,64,.5)}
-.sector .num{font:600 120px/1 var(--fd);letter-spacing:-.05em;position:absolute;right:20px;top:10px;color:#141B4A;-webkit-text-stroke:3px rgba(255,255,255,.12);paint-order:stroke fill}
-.sector .sico{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:rgba(248,176,64,.14);color:var(--accent);margin-bottom:auto;transition:transform .6s var(--ease-o),background .4s}
+.sector .num{font:600 96px/1 var(--fd);letter-spacing:-.05em;position:absolute;right:18px;bottom:10px;top:auto;color:#141B4A;-webkit-text-stroke:3px rgba(255,255,255,.12);paint-order:stroke fill}
+.sthumb{position:relative;margin:-14px -14px 0;border-radius:20px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,rgba(75,88,224,.35),rgba(10,15,44,.4) 70%);border:1px solid rgba(255,255,255,.06);aspect-ratio:16/9}
+.sart{display:block;width:100%;height:100%}
+.sector .sico{position:absolute;left:12px;top:12px;width:44px!important;height:44px!important;border-radius:14px!important;background:rgba(10,15,44,.75)!important;}
+.sector .sico .i{width:22px!important;height:22px!important}
+.sart .sa-float{animation:saf 3.2s ease-in-out infinite}
+@keyframes saf{50%{transform:translateY(-6px)}}
+.sart .sa-beat{transform-box:fill-box;transform-origin:center;animation:beat 1.1s infinite}
+.sart .sa-blink{animation:sab 1s steps(2) infinite}.sart .sa-blink2{animation:sab 1s steps(2) .5s infinite}
+@keyframes sab{50%{opacity:.25}}
+.sart .sa-dash{stroke-dasharray:400;animation:sad 2.6s linear infinite}
+@keyframes sad{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
+.sart .sa-swing{animation:sas 2.4s ease-in-out infinite alternate}
+@keyframes sas{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.sart .sa-smoke{transform-box:fill-box;transform-origin:center;animation:sam 2.6s ease-out infinite}
+@keyframes sam{from{transform:translateY(0) scale(.6);opacity:.8}to{transform:translateY(-36px) scale(2);opacity:0}}
+.sart .sa-spin{animation:sasp 12s linear infinite}
+@keyframes sasp{to{transform:rotate(360deg)}}
+.sart .sa-wave{transform-box:fill-box;transform-origin:left center;animation:saw 1.4s ease-in-out infinite alternate}
+@keyframes saw{to{transform:skewY(6deg) scaleX(.92)}}
+.sart .sa-bounce{animation:sabo 1.2s cubic-bezier(.3,0,.6,1) infinite alternate}
+@keyframes sabo{to{transform:translateY(-12px)}}
+.sart .sa-fly{animation:safl 3.4s ease-in-out infinite alternate}
+@keyframes safl{from{transform:translate(-8px,6px)}to{transform:translate(14px,-6px)}}
+.sart .sa-road{animation:sar 1s linear infinite}
+@keyframes sar{to{stroke-dashoffset:-26}}
+.sector .sico{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:rgba(248,176,64,.14);color:var(--accent);transition:transform .6s var(--ease-o),background .4s}
 .sector .sico .i{width:30px;height:30px}
-.sector:hover .sico{transform:rotate(-8deg) scale(1.08);background:var(--accent);color:var(--ink)}
-.sector h3{font-size:clamp(1.6rem,2.4vw,2rem);margin:40px 0 14px}
+.sector:hover .sico{transform:rotate(-8deg) scale(1.08);background:var(--accent)!important;color:var(--ink)}.sector:hover .sart{transform:scale(1.04)}.sart{transition:transform .8s var(--ease-o)}
+.sector h3{font-size:clamp(1.5rem,2.2vw,1.9rem);margin:22px 0 10px}
 .sector .aud{color:var(--on-dark);font-size:15px;line-height:1.5;margin-bottom:16px}
 .sector .top{color:var(--on-dark-muted);font-size:14px;line-height:1.55;border-top:1px solid rgba(255,255,255,.1);padding-top:16px}
 .sector .glow{position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(248,176,64,.16),transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
@@ -2137,13 +2162,57 @@ function bStats(c) {
     return `<div class="stat" data-r="up"><div class="odo" aria-label="${attr(v + (s.suffix || ''))}">${[...v].map(d => `<span class="col" data-d="${d}" aria-hidden="true">${'0123456789'.split('').map(n => `<span>${n}</span>`).join('')}</span>`).join('')}<span class="suf" aria-hidden="true">${esc(s.suffix || '')}</span></div><p>${esc(s.label)}</p></div>`;
   }).join('')}</div></section>`;
 }
+const SK = '#C68B59', SK2 = '#8D5A3B';
+const HEARTP = (x, y, s, fill, cls = '') => `<path class="${cls}" d="${HEART}" fill="${fill}" transform="translate(${x},${y}) scale(${s})"/>`;
+const person = (x, y, s, body, skin = SK, cls = '') => `<g class="${cls}" transform="translate(${x},${y}) scale(${s})"><circle cx="0" cy="-34" r="11" fill="${skin}"/><path d="M-11-40a11 11 0 0 1 22 0c-3-5-8-7-11-7s-8 2-11 7z" fill="#1B1B2F"/><rect x="-14" y="-20" width="28" height="42" rx="13" fill="${body}"/></g>`;
+const SECTOR_ART = {
+  heart: `<circle cx="160" cy="92" r="62" fill="rgba(230,57,70,.12)"/>${HEARTP(160, 128, 3.4, 'rgba(230,57,70,.28)', 'sa-beat')}
+    ${person(118, 128, 1.15, '#4B58E0')}${person(164, 124, 1.3, '#F8B040', SK2)}${person(206, 136, .8, '#7C86F0')}
+    <path d="M20 150h90l8-14 10 26 10-34 8 22 6-0h148" fill="none" stroke="#EEF1FF" stroke-opacity=".55" stroke-width="2.5" stroke-linejoin="round" class="sa-dash"/>`,
+  briefcase: `<rect x="112" y="36" width="74" height="116" rx="6" fill="#1A2270" stroke="#7C86F0" stroke-opacity=".5"/>
+    ${Array.from({ length: 12 }, (_, i) => `<rect x="${122 + (i % 3) * 20}" y="${48 + Math.floor(i / 3) * 22}" width="12" height="12" rx="2" fill="${i % 4 === 1 ? '#F8B040' : 'rgba(238,241,255,.25)'}" class="${i % 4 === 1 ? 'sa-blink' : ''}"/>`).join('')}
+    <rect x="192" y="74" width="50" height="78" rx="6" fill="#4B58E0"/>${Array.from({ length: 6 }, (_, i) => `<rect x="${200 + (i % 2) * 18}" y="${84 + Math.floor(i / 2) * 20}" width="12" height="10" rx="2" fill="rgba(238,241,255,.35)"/>`).join('')}
+    <circle cx="149" cy="28" r="14" fill="#fff"/><path d="M149 20v16M141 28h16" stroke="#E63946" stroke-width="5"/>
+    <g class="sa-float"><rect x="54" y="112" width="52" height="36" rx="6" fill="#F8B040"/><path d="M70 112v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6" fill="none" stroke="#F8B040" stroke-width="4"/><path d="M54 126h52" stroke="#0A0F2C" stroke-opacity=".3" stroke-width="2"/></g>
+    <path d="M30 152h260" stroke="#7C86F0" stroke-opacity=".4" stroke-width="2"/>`,
+  helmet: `<path d="M206 152V30M150 36h136M262 36v34" stroke="#F8B040" stroke-width="5" stroke-linecap="round"/><path d="M206 36l-24 0 24-14z" fill="#F8B040"/>
+    <g class="sa-swing" style="transform-origin:262px 36px"><path d="M262 70v14" stroke="#EEF1FF" stroke-width="3"/><rect x="250" y="84" width="24" height="18" rx="3" fill="#4B58E0"/></g>
+    <path d="M226 152v-36l22 14v-14l22 14v-14l22 14v22z" fill="#1A2270" stroke="#7C86F0" stroke-opacity=".5"/>
+    <circle cx="284" cy="104" r="7" fill="rgba(238,241,255,.25)" class="sa-smoke"/>
+    <g class="sa-float"><path d="M64 132a46 40 0 0 1 92 0z" fill="#F8B040"/><rect x="52" y="130" width="116" height="12" rx="6" fill="#E59A1D"/><path d="M110 94v36" stroke="#0A0F2C" stroke-opacity=".25" stroke-width="6"/></g>
+    <path d="M30 154h260" stroke="#7C86F0" stroke-opacity=".4" stroke-width="2"/>`,
+  shield: `<circle cx="96" cy="50" r="12" fill="#E63946" class="sa-blink"/><circle cx="224" cy="50" r="12" fill="#4B58E0" class="sa-blink2"/>
+    <circle cx="96" cy="50" r="24" fill="rgba(230,57,70,.18)" class="sa-blink"/><circle cx="224" cy="50" r="24" fill="rgba(75,88,224,.25)" class="sa-blink2"/>
+    <g class="sa-float"><path d="M160 24l58 20v40c0 34-26 56-58 66-32-10-58-32-58-66V44z" fill="#1A2270" stroke="#F8B040" stroke-width="4"/>
+    <path d="M160 58l9 19 21 3-15 14 4 21-19-10-19 10 4-21-15-14 21-3z" fill="#F8B040"/></g>`,
+  globe: `<g class="sa-spin" style="transform-origin:160px 92px"><circle cx="160" cy="92" r="52" fill="#4B58E0"/>
+    <ellipse cx="160" cy="92" rx="22" ry="52" fill="none" stroke="#EEF1FF" stroke-opacity=".5" stroke-width="2"/><path d="M108 92h104M116 66h88M116 118h88" stroke="#EEF1FF" stroke-opacity=".5" stroke-width="2"/>
+    <path d="M136 60c10 6 6 16 16 18s8 14 0 20-18 2-20 12" fill="none" stroke="#3DDC97" stroke-width="5" stroke-linecap="round"/></g>
+    <path d="M50 152V56M270 152V56" stroke="#EEF1FF" stroke-width="3"/>
+    <g class="sa-wave"><path d="M50 58h42v28H50z" fill="#006AA7"/><path d="M63 58h6v28h-6zM50 69h42v6H50z" fill="#FECC02"/></g><g class="sa-wave"><path d="M228 58h42v28h-42z" fill="#006A4E"/><circle cx="246" cy="72" r="8.5" fill="#F42A41"/></g>
+    <path d="M30 154h260" stroke="#7C86F0" stroke-opacity=".4" stroke-width="2"/>`,
+  stethoscope: `<rect x="58" y="38" width="88" height="114" rx="8" fill="#EEF1FF"/><rect x="82" y="30" width="40" height="16" rx="5" fill="#7C86F0"/>
+    <path d="M102 62v28M88 76h28" stroke="#E63946" stroke-width="8" stroke-linecap="round"/>
+    <path d="M72 108h60M72 122h44M72 136h52" stroke="#9AA0C8" stroke-width="5" stroke-linecap="round"/>
+    <g class="sa-float"><path d="M186 40v34a26 26 0 0 0 52 0V40" fill="none" stroke="#F8B040" stroke-width="7" stroke-linecap="round"/><path d="M212 100v18a24 24 0 0 0 48 0v-10" fill="none" stroke="#F8B040" stroke-width="7" stroke-linecap="round"/><circle cx="260" cy="100" r="13" fill="#4B58E0" stroke="#F8B040" stroke-width="5"/></g>
+    <path d="M160 160h30l6-12 8 22 8-28 6 18h60" fill="none" stroke="#3DDC97" stroke-width="3" stroke-linejoin="round" class="sa-dash"/>`,
+  trophy: `<g class="sa-float"><path d="M50 74l56-24 56 24-56 24z" fill="#4B58E0"/><path d="M76 86v22c0 8 60 8 60 0V86l-30 12z" fill="#1A2270" stroke="#7C86F0" stroke-opacity=".6"/><path d="M162 74v30" stroke="#F8B040" stroke-width="3"/><circle cx="162" cy="106" r="5" fill="#F8B040"/></g>
+    <g class="sa-bounce"><circle cx="236" cy="104" r="34" fill="#EEF1FF"/><path d="M236 88l14 10-5 16h-18l-5-16z" fill="#0A0F2C"/><path d="M236 88v-18M250 98l16-6M245 114l10 14M227 114l-10 14M222 98l-16-6" stroke="#0A0F2C" stroke-width="2"/></g>
+    <path d="M150 150h24l-4-10h-16z" fill="#F8B040"/><path d="M146 116h32v8c0 10-8 16-16 16s-16-6-16-16z" fill="#F8B040"/>
+    <path d="M30 154h260" stroke="#7C86F0" stroke-opacity=".4" stroke-width="2"/>`,
+  plane: `<g class="sa-fly"><path d="M70 58l120-20c14-2 22 8 10 14L86 82z" fill="#EEF1FF"/><path d="M120 50l26-30h14l-10 34z" fill="#7C86F0"/><path d="M82 62l-14-20h-10l8 26z" fill="#7C86F0"/><circle cx="176" cy="44" r="3" fill="#4B58E0"/><circle cx="164" cy="46" r="3" fill="#4B58E0"/><circle cx="152" cy="48" r="3" fill="#4B58E0"/></g>
+    <rect x="60" y="104" width="150" height="40" rx="10" fill="#F8B040"/>${[0, 1, 2, 3, 4].map(i => `<rect x="${72 + i * 26}" y="112" width="18" height="14" rx="3" fill="#0A0F2C" fill-opacity=".7"/>`).join('')}
+    <circle cx="92" cy="146" r="9" fill="#1A2270" stroke="#EEF1FF" stroke-width="3"/><circle cx="180" cy="146" r="9" fill="#1A2270" stroke="#EEF1FF" stroke-width="3"/>
+    <path d="M30 158h260" stroke="#EEF1FF" stroke-opacity=".5" stroke-width="3" stroke-dasharray="14 12" class="sa-road"/>`
+};
+const sectorArt = icon => `<svg class="sart" viewBox="0 0 320 180" aria-hidden="true">${SECTOR_ART[icon] || SECTOR_ART.heart}</svg>`;
 function bTraining(c) {
   const t = c.training;
   return `<section id="training" aria-label="${attr(t.title)}"><div class="hpin"><div class="htrack">
     <div class="hintro"><p class="eyebrow">${esc(t.eyebrow)}</p><h2 class="h2">${esc(t.title)}</h2><p class="lead">${esc(t.intro)}</p><span class="hhint">Scroll to explore ${ic('arrow')}</span></div>
     ${t.image ? `<figure class="photo-card"><img src="${attr(t.image)}" alt="${attr(t.imageAlt || '')}" loading="lazy" decoding="async" onerror="this.parentNode.remove()">${t.imageCaption ? `<figcaption>${esc(t.imageCaption)}</figcaption>` : ''}</figure>` : ''}
     ${t.sectors.map((s, i) => `<article class="sector" data-tilt><span class="num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><div class="glow"></div>
-      <span class="sico">${ic(s.icon || 'heart')}</span>
+      <div class="sthumb">${sectorArt(s.icon || 'heart')}<span class="sico">${ic(s.icon || 'heart')}</span></div>
       <h3>${esc(s.title)}</h3><p class="aud">${esc(s.audience)}</p><p class="top">${esc(s.topics)}</p>
       <a class="ul" href="#enquiry" data-go="enquiry" style="margin-top:20px;font:600 15px var(--fd);align-self:flex-start;color:var(--accent)">Book this course →</a>
     </article>`).join('')}
