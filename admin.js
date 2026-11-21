@@ -36,7 +36,7 @@
   var DANGER_BYTES = 15 * MB;
   var GITHUB_LIMIT = 25 * MB;
 
-  var SECTION_ORDER = ['brand', 'hero', 'marquee', 'about', 'stats', 'training', 'modules', 'lab', 'equipment', 'gallery', 'team', 'compliance', 'enquiry', 'contact', 'emergency', 'footer', 'nav', 'seo', 'meta'];
+  var SECTION_ORDER = ['brand', 'hero', 'marquee', 'about', 'stats', 'training', 'modules', 'lab', 'equipment', 'gallery', 'team', 'compliance', 'enquiry', 'contact', 'emergency', 'footer', 'nav', 'seo', 'settings', 'meta'];
   var SECTIONS = {
     brand: { label: 'Brand & colours', icon: 'palette', desc: 'Name, logo and colours' },
     hero: { label: 'Top banner', icon: 'sparkle', desc: 'Big headline slides', list: 'slides' },
@@ -56,6 +56,7 @@
     footer: { label: 'Footer', icon: 'layout', desc: 'Bottom of the page' },
     nav: { label: 'Menu', icon: 'menu', desc: 'Top navigation links' },
     seo: { label: 'Google & sharing', icon: 'globe', desc: 'Search title, share image' },
+    settings: { label: 'Settings', icon: 'lock', desc: 'Google Drive API key' },
     meta: { label: 'File info', icon: 'tag', desc: 'Version (automatic)' }
   };
   var PREVIEW_IDS = ['hero', 'marquee', 'about', 'stats', 'training', 'modules', 'lab', 'equipment', 'gallery', 'team', 'enquiry', 'contact', 'footer'];
@@ -86,6 +87,8 @@
     slides: 'Slides', fields: 'Form questions', colors: 'Colours', primary: 'Primary (royal blue)', accent: 'Accent (amber)',
     ink: 'Ink (text / dark)', paper: 'Paper (background)', emergency: 'Emergency red', suffix: 'After the number (e.g. +)',
     value: 'Number', label: 'Label', title: 'Title', text: 'Text', name: 'Name', role: 'Role', year: 'Year', type: 'Type',
+    googleApiKey: 'Google Drive API key', driveSources: 'Google Drive folders', folder: 'Google Drive folder link',
+    driveFolder: 'Google Drive folder (optional)',
     logo: 'Logo', image: 'Image', date: 'Date', summary: 'Short description', category: 'Category', icon: 'Icon', intro: 'Intro text'
   };
   var LABELS_BY_PATH = {
@@ -95,7 +98,7 @@
     'enquiry.googleForm.fields.*.type': 'Answer type', 'enquiry.googleForm.fields.*.label': 'Question',
     'gallery.albums.*.logo': 'Company logo (optional)', 'gallery.albums.*.link': 'Link (optional)', 'gallery.albums.*.video': 'Video link (optional)',
     'gallery.albums.*.date': 'Date (optional)', 'seo.url': 'Website address', 'seo.title': 'Title in Google', 'seo.description': 'Description in Google',
-    'equipment.aed.models.*.type': 'Type'
+    'equipment.aed.models.*.type': 'Type', 'gallery.driveSources.*.title': 'Title (optional)'
   };
   var HINTS = {
     eyebrow: 'The small text shown above the heading.',
@@ -124,6 +127,9 @@
   var HINTS_BY_PATH = {
     'gallery.categories': 'Albums are grouped by these. You can also create one from an album’s Category menu.',
     'gallery.albums.*.logo': 'Optional: the client company’s logo.',
+    'gallery.albums.*.driveFolder': 'Optional: photos and videos in this Drive folder are added to this album automatically.',
+    'gallery.driveSources': 'Each folder’s subfolders become albums in the chosen category.',
+    'gallery.driveSources.*.title': 'Optional. Leave empty to use the folder names.',
     'gallery.albums.*.date': 'Optional, e.g. “March 2026”.',
     'brand.logo': 'Leave empty to use the built-in heart logo.',
     'seo.title': 'About 50–60 characters works best.',
@@ -133,7 +139,7 @@
     'hero.slides': 'slide', 'marquee.items': 'client logo', 'about.timeline': 'timeline step', 'stats.items': 'number',
     'training.sectors': 'sector', 'modules.items': 'module', 'lab.scenes': 'scenario', 'equipment.aed.models': 'AED model',
     'equipment.categories': 'category', 'gallery.albums': 'album', 'team.members': 'team member',
-    'enquiry.googleForm.fields': 'question', 'contact.phones': 'phone number', 'contact.socials': 'social link', 'nav': 'menu link',
+    'enquiry.googleForm.fields': 'question', 'gallery.driveSources': 'Drive folder', 'contact.phones': 'phone number', 'contact.socials': 'social link', 'nav': 'menu link',
     'about.points': 'point', 'modules.items.*.tags': 'tag', 'compliance.words': 'word', 'gallery.categories': 'category',
     'equipment.categories.*.items': 'product', 'enquiry.googleForm.fields.*.options': 'choice', 'lab.scenes.*.steps': 'step',
     'emergency.steps': 'step'
@@ -142,6 +148,7 @@
     'gallery.albums': { id: '', title: '', category: '', date: '', summary: '', thumb: '', images: [], link: '', logo: '', video: '' },
     'team.members': { name: '', role: '', photo: '', bio: '', linkedin: '' },
     'marquee.items': { name: '', logo: '', url: '' },
+    'gallery.driveSources': { category: '', folder: '', title: '' },
     'enquiry.googleForm.fields': { label: '', entry: '', type: 'text', required: false, options: [] }
   };
 
@@ -296,7 +303,8 @@
   function logoMark(size, extraCls) {
     var g = '';
     for (var i = 0; i < 6; i++) {
-      g += '<path d="' + HEART + '" transform="rotate(' + (i * 60) + ')" fill="' + (i % 2 ? '#283090' : '#F8B040') + '"' + (i % 2 ? ' stroke="rgba(255,255,255,.35)" stroke-width="1"' : '') + '/>';
+      var blue = extraCls === 'on-dark' ? '#4652D0' : '#283090';
+      g += '<path d="' + HEART + '" transform="rotate(' + (i * 60) + ')" fill="' + (i % 2 ? blue : '#F8B040') + '"' + (i % 2 ? ' stroke="rgba(255,255,255,.35)" stroke-width="1"' : '') + '/>';
     }
     var s = document.createElement('span');
     s.className = 'fa-logo' + (extraCls ? ' ' + extraCls : '');
@@ -313,11 +321,11 @@
     '.fa-admin{--blue:#283090;--blue2:#3942b5;--blue-soft:#E8EAF8;--amber:#F8B040;--amber-soft:#FEF2DA;--ink:#0A0F2C;--paper:#F6F4EE;--red:#E63946;--red-soft:#FDE8EA;--ok:#14855C;--ok-soft:#E1F4EC;--line:rgba(10,15,44,.10);--line2:rgba(10,15,44,.16);--muted:#5A607E;--card:#fff;--r:18px;--r-md:14px;--r-sm:10px;--sh:0 1px 2px rgba(10,15,44,.05),0 10px 30px -14px rgba(10,15,44,.22);--sh-lg:0 30px 80px -20px rgba(10,15,44,.45);--ease:cubic-bezier(.2,.8,.2,1);',
     'position:fixed;inset:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;text-align:left;letter-spacing:normal;z-index:2147483000;}',
     '.fa-admin *,.fa-admin *::before,.fa-admin *::after{box-sizing:border-box;}',
-    '.fa-admin h1,.fa-admin h2,.fa-admin h3,.fa-admin h4{font-family:"Familjen Grotesk",Inter,system-ui,sans-serif;margin:0;letter-spacing:-.01em;line-height:1.15;color:inherit;text-transform:none;}',
-    '.fa-admin p{margin:0;}',
-    '.fa-admin button,.fa-admin input,.fa-admin select,.fa-admin textarea{font:inherit;color:inherit;letter-spacing:normal;text-transform:none;}',
-    '.fa-admin button{cursor:pointer;background:none;border:0;padding:0;margin:0;-webkit-tap-highlight-color:transparent;}',
-    '.fa-admin a{color:var(--blue);}',
+    ':where(.fa-admin) :where(h1,h2,h3,h4){font-family:"Familjen Grotesk",Inter,system-ui,sans-serif;margin:0;letter-spacing:-.01em;line-height:1.15;color:inherit;text-transform:none;font-weight:700;}',
+    ':where(.fa-admin) p{margin:0;}',
+    ':where(.fa-admin) :where(button,input,select,textarea){font:inherit;color:inherit;letter-spacing:normal;text-transform:none;}',
+    ':where(.fa-admin) button{cursor:pointer;background:none;border:0;padding:0;margin:0;-webkit-tap-highlight-color:transparent;}',
+    ':where(.fa-admin) a{color:var(--blue);}',
     '.fa-admin :focus{outline:none;}',
     '.fa-admin :focus-visible{outline:3px solid var(--amber)!important;outline-offset:2px;border-radius:10px;}',
     '.fa-admin input:focus-visible,.fa-admin textarea:focus-visible,.fa-admin select:focus-visible{outline-offset:0;}',
@@ -431,6 +439,8 @@
     '.fa-test{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:0 12px;border-radius:12px;background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:13px;text-decoration:none;flex:none;}',
     '.fa-test[aria-disabled="true"]{opacity:.4;pointer-events:none;}',
     '.fa-test .fa-ic{width:16px;height:16px;}',
+    '.fa-drive-res{font-size:13px;font-weight:600;color:var(--muted);}.fa-drive-res:empty{display:none;}',
+    '.fa-drive-res.ok{color:var(--ok);}.fa-drive-res.err{color:#b0202c;}',
     '.fa-group{border:1px solid var(--line);border-radius:var(--r-md);background:rgba(255,255,255,.55);padding:14px;display:flex;flex-direction:column;gap:14px;min-width:0;margin:0;}',
     '.fa-group-t{font-family:"Familjen Grotesk",Inter,sans-serif;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;padding:0;}',
     '.fa-readonly{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;padding:14px;border-radius:var(--r-md);background:#fff;border:1px dashed var(--line2);font-size:14px;}',
@@ -585,6 +595,7 @@
     '.fa-tbl{width:100%;border-collapse:collapse;font-size:13.5px;}',
     '.fa-tbl th,.fa-tbl td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top;}',
     '.fa-tbl th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}',
+    '.fa-tbl th.num{text-align:right;}',
     '.fa-tbl td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;}',
     '.fa-tbl tr.less td{color:#b0202c;font-weight:600;}',
     '.fa-shrink{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none;}',
@@ -696,6 +707,7 @@
     '.fa-menu{left:8px!important;right:8px!important;top:auto!important;bottom:8px!important;min-width:0;transform-origin:bottom center;padding:8px 8px max(8px,env(safe-area-inset-bottom));border-radius:20px;}',
     '.fa-toasts{bottom:max(14px,env(safe-area-inset-bottom));}',
     '.fa-img-prev{width:80px;height:64px;}',
+    '.fa-save-time{display:none;}',
     '}',
     '@media (max-width:420px){.fa-rowi .fa-num{display:none;}.fa-tiles{grid-template-columns:1fr 1fr;}.fa-tile{padding:12px;min-height:96px;}.fa-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}',
     '@keyframes faSheetIn{from{transform:translateY(40px);opacity:0}}'
@@ -853,7 +865,7 @@
   function renderNoCrypto() {
     S.root.innerHTML = '';
     var card = h('div', { class: 'fa-login-card' },
-      h('div', { class: 'fa-login-logo' }, logoMark(76)),
+      h('div', { class: 'fa-login-logo' }, logoMark(76, 'on-dark')),
       h('h1', { text: 'Site admin' }),
       h('div', { class: 'fa-help-dark' },
         h('b', { text: 'This browser can’t run the secure login here.' }),
@@ -894,7 +906,7 @@
       pw2 ? h('label', null, 'Confirm password', pw2.el) : null,
       err, submit);
     var card = h('div', { class: 'fa-login-card' },
-      h('div', { class: 'fa-login-logo' }, logoMark(84)),
+      h('div', { class: 'fa-login-logo' }, logoMark(84, 'on-dark')),
       h('h1', { text: 'First Aid Centre of Sweden' }),
       h('p', { class: 'fa-sub', text: 'Bangladesh · Website admin' }),
       h('h2', null, icon(mode === 'create' ? 'sparkle' : 'lock'), mode === 'create' ? 'Create your admin login' : 'Welcome back'),
@@ -965,7 +977,7 @@
   }
   function renderLoading(msg) {
     S.root.innerHTML = ''; S.els = {};
-    S.root.appendChild(h('div', { class: 'fa-loading' }, h('div', { style: { textAlign: 'center' } }, logoMark(72), h('p', { text: msg || 'Loading your website content…' }))));
+    S.root.appendChild(h('div', { class: 'fa-loading' }, h('div', { style: { textAlign: 'center' } }, logoMark(72, 'on-dark'), h('p', { text: msg || 'Loading your website content…' }))));
   }
   function boot(isNew) {
     renderLoading();
@@ -1000,7 +1012,7 @@
   function renderNoContent() {
     S.root.innerHTML = '';
     var box = h('div', { class: 'fa-login' }, h('div', { class: 'fa-login-card' },
-      h('div', { class: 'fa-login-logo' }, logoMark(70)),
+      h('div', { class: 'fa-login-logo' }, logoMark(70, 'on-dark')),
       h('h1', { text: 'Couldn’t load content.json' }),
       h('p', { class: 'fa-sub', text: (S.liveError && S.liveError.message) || 'Unknown error' }),
       h('div', { style: { display: 'grid', gap: '10px', marginTop: '20px' } },
@@ -1213,7 +1225,7 @@
     var el = S.els.save; if (!el) return;
     el.className = 'fa-save ' + st; el.innerHTML = '';
     if (st === 'saving') { el.appendChild(h('span', { class: 'fa-dot' })); el.appendChild(document.createTextNode('Saving draft…')); }
-    else if (st === 'saved') { el.appendChild(icon('check')); el.appendChild(document.createTextNode('Draft saved ✓ ' + (S.savedAt ? shortTime(S.savedAt) : ''))); }
+    else if (st === 'saved') { el.appendChild(document.createTextNode('Draft saved')); el.appendChild(icon('check')); if (S.savedAt) el.appendChild(h('span', { class: 'fa-save-time', style: { opacity: '.7' }, text: shortTime(S.savedAt) })); el.title = 'Saved on this device ' + timeStr(S.savedAt || Date.now()); }
     else if (st === 'error') { el.appendChild(icon('alert')); el.appendChild(document.createTextNode('Draft not saved')); }
     else { el.appendChild(document.createTextNode('No changes yet')); }
   }
@@ -1308,7 +1320,7 @@
       h('ol', null,
         h('li', { text: 'Pick a section below and change text or photos.' }),
         h('li', { text: 'Check the live preview.' }),
-        h('li', null, 'Press ', h('b', { text: 'Download content.json' }), ' and upload it to GitHub to publish.'))));
+        h('li', null, h('span', null, 'Press ', h('b', { text: 'Download content.json' }), ' and upload it to GitHub to publish.')))));
     wrap.appendChild(h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' } },
       h('button', { class: 'fa-btn fa-btn-soft', type: 'button', onclick: function () { openSection('gallery'); } }, icon('image'), 'Add photos to the gallery'),
       h('button', { class: 'fa-btn fa-btn-ghost', type: 'button', onclick: showPublishHelp }, icon('help'), 'How to publish')));
@@ -1384,6 +1396,10 @@
   function renderChildren(el, obj, path) {
     var sp = schemaPath(path);
     if (sp === 'enquiry.googleForm') el.appendChild(formHelp());
+    if (sp === 'settings') el.appendChild(apiKeyHelp());
+    if (sp === 'gallery') el.appendChild(h('div', { class: 'fa-help' }, h('h4', null, icon('image'), 'Photos from Google Drive'),
+      h('p', { text: 'Upload photos/videos to Google Drive, share the folder as ‘Anyone with the link – Viewer’, paste the link here. Subfolders become albums automatically. New photos appear on the site within a few minutes — no need to download content.json again.' }),
+      h('p', { style: { marginTop: '6px' } }, 'Needs a Google Drive API key in ', h('button', { type: 'button', style: { textDecoration: 'underline', fontWeight: '600', minHeight: '32px' }, onclick: function () { openSection('settings'); }, text: 'Settings' }), '.')));
     Object.keys(obj).forEach(function (k) {
       // hide answer choices for non-choice form questions
       if (k === 'options' && /googleForm\.fields\.\*$/.test(sp) && obj.type !== 'choice') return;
@@ -1433,7 +1449,9 @@
     if (typeof v === 'number') return 'number';
     if (IMAGE_KEYS[key]) return 'image';
     if (path[0] === 'brand' && path[1] === 'colors') return 'color';
-    if (key === 'category' && path[0] === 'gallery' && path[1] === 'albums') return 'category';
+    if (key === 'category' && path[0] === 'gallery' && (path[1] === 'albums' || path[1] === 'driveSources')) return 'category';
+    if (key === 'googleApiKey') return 'secret';
+    if (key === 'driveFolder' || (key === 'folder' && path[1] === 'driveSources')) return 'drive';
     if (key === 'type' && /googleForm\.fields\.\*\.type$/.test(sp)) return 'formtype';
     if (key === 'target') return 'target';
     if (key === 'icon') return 'icon';
@@ -1468,6 +1486,32 @@
         break;
       }
       case 'image': return renderImageField(el, v, path, f);
+      case 'secret': {
+        input = h('input', { class: 'fa-input', type: 'password', id: f.id, value: v == null ? '' : String(v), autocomplete: 'off', spellcheck: 'false', placeholder: 'AIza…' });
+        var eye = h('button', { class: 'fa-btn fa-btn-soft', type: 'button', 'aria-label': 'Show key' }, icon('eye'), 'Show');
+        eye.addEventListener('click', function () {
+          var show = input.type === 'password'; input.type = show ? 'text' : 'password';
+          eye.innerHTML = ''; append(eye, [icon(show ? 'eyeoff' : 'eye'), show ? 'Hide' : 'Show']); eye.setAttribute('aria-label', show ? 'Hide key' : 'Show key');
+        });
+        input.addEventListener('input', function () { onVal(input.value.trim()); });
+        wrap.appendChild(h('div', { class: 'fa-row' }, input, eye));
+        break;
+      }
+      case 'drive': {
+        input = h('input', { class: 'fa-input', type: 'url', id: f.id, value: v, inputmode: 'url', spellcheck: 'false', autocomplete: 'off', placeholder: 'https://drive.google.com/drive/folders/…' });
+        var res = h('div', { class: 'fa-drive-res', role: 'status', 'aria-live': 'polite' });
+        var chk = h('button', { class: 'fa-btn fa-btn-soft', type: 'button' }, icon('check'), 'Check folder');
+        input.addEventListener('input', function () { onVal(input.value.trim()); res.textContent = ''; res.className = 'fa-drive-res'; });
+        chk.addEventListener('click', function () {
+          chk.disabled = true; res.className = 'fa-drive-res'; res.textContent = 'Checking…';
+          checkDriveFolder(input.value.trim()).then(function (msg) { res.className = 'fa-drive-res ok'; res.textContent = msg; },
+            function (e) { res.className = 'fa-drive-res err'; res.textContent = e.message; })
+            .then(function () { chk.disabled = false; });
+        });
+        wrap.appendChild(h('div', { class: 'fa-row' }, input, chk));
+        wrap.appendChild(res);
+        break;
+      }
       case 'color': {
         var hex = /^#[0-9a-f]{6}$/i.test(v) ? v : '#000000';
         var picker = h('input', { type: 'color', value: hex, 'aria-label': labelFor(path) + ' colour picker' });
@@ -1932,7 +1976,7 @@
     var it = emptyLike(tpl);
     if (isObj(it)) {
       if ('id' in it) it.id = uniqueId(arr, sp === 'gallery.albums' ? 'album' : (singularFor(path).replace(/\s+/g, '-') || 'item'));
-      if (sp === 'gallery.albums') { it.category = (S.draft.gallery && S.draft.gallery.categories || [])[0] || ''; }
+      if (sp === 'gallery.albums' || sp === 'gallery.driveSources') { it.category = (S.draft.gallery && S.draft.gallery.categories || [])[0] || ''; }
     }
     return it;
   }
@@ -1942,6 +1986,7 @@
     if (it.year) t = it.year + (t ? ' — ' + t : '');
     if (!t && it.number) t = it.number;
     if (!t && it.value != null) t = String(it.value);
+    if (!t && 'folder' in it) t = (it.category || 'Google Drive') + ' · Drive folder';
     return t ? String(t) : 'Untitled ' + (i + 1);
   }
   function cardSub(it) {
@@ -2075,6 +2120,57 @@
       toast('Moved');
     });
     return card;
+  }
+
+  /* ---------- Google Drive ---------- */
+  function apiKeyHelp() {
+    return h('div', { class: 'fa-help' },
+      h('h4', null, icon('help'), 'How to get a Google Drive API key'),
+      h('ol', null,
+        h('li', null, 'Open ', h('b', { text: 'console.cloud.google.com' }), ' → ', h('b', { text: 'New project' }), '.'),
+        h('li', null, h('b', { text: 'APIs & Services' }), ' → ', h('b', { text: 'Enable APIs' }), ' → enable ', h('b', { text: 'Google Drive API' }), '.'),
+        h('li', null, h('b', { text: 'Credentials' }), ' → ', h('b', { text: 'Create credentials → API key' }), '.'),
+        h('li', null, h('b', { text: 'Restrict key' }), ': API restrictions = Google Drive API; Website restrictions = your domain(s), e.g. ', h('code', { text: 'https://yourdomain.com/*' }), ' and ', h('code', { text: 'https://*.vercel.app/*' }), '.'),
+        h('li', { text: 'Paste the key below. It is visible in the website’s code, which is normal; the restrictions keep it safe.' })));
+  }
+  function driveFolderId(link) {
+    var s = String(link || '').trim(); var m;
+    if ((m = s.match(/\/folders\/([\w-]{10,})/))) return m[1];
+    if ((m = s.match(/[?&]id=([\w-]{10,})/))) return m[1];
+    if (/^[\w-]{20,}$/.test(s)) return s;
+    return '';
+  }
+  function driveList(id, key) {
+    var url = 'https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent("'" + id + "' in parents and trashed=false") + '&key=' + encodeURIComponent(key) + '&fields=' + encodeURIComponent('files(id,name,mimeType)') + '&pageSize=1000';
+    return fetch(url).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (r.ok) return j.files || [];
+        var msg = (j.error && j.error.message) || ('HTTP ' + r.status); var low = msg.toLowerCase();
+        var reasons = JSON.stringify(j.error || {}).toLowerCase();
+        if (low.indexOf('api key not valid') >= 0 || reasons.indexOf('api_key_invalid') >= 0) throw new Error('API key is not valid. Check it in Settings.');
+        if (reasons.indexOf('referer') >= 0 || reasons.indexOf('referrer') >= 0 || low.indexOf('blocked') >= 0) throw new Error('API key is restricted: this website address is not allowed in the key’s Website restrictions (or Drive API is not allowed).');
+        if (low.indexOf('has not been used') >= 0 || low.indexOf('disabled') >= 0) throw new Error('Google Drive API is not enabled for this key’s project.');
+        if (r.status === 404) throw new Error('Folder not found, or not shared as ‘Anyone with the link’.');
+        throw new Error('Google said: ' + msg);
+      });
+    }, function () { throw new Error('Could not reach Google. Check your internet connection.'); });
+  }
+  function checkDriveFolder(link) {
+    var id = driveFolderId(link);
+    if (!id) return Promise.reject(new Error('That doesn’t look like a Google Drive folder link (…/drive/folders/…).'));
+    var key = S.draft && S.draft.settings && S.draft.settings.googleApiKey;
+    if (!key) return Promise.reject(new Error('API key missing: add your Google Drive API key in Settings first.'));
+    var isFolder = function (f) { return f.mimeType === 'application/vnd.google-apps.folder'; };
+    return driveList(id, key).then(function (files) {
+      var subs = files.filter(isFolder);
+      return Promise.all(subs.slice(0, 30).map(function (s) { return driveList(s.id, key).catch(function () { return []; }); })).then(function (lists) {
+        var all = files.concat.apply(files, lists);
+        var photos = all.filter(function (f) { return /^image\//.test(f.mimeType); }).length;
+        var videos = all.filter(function (f) { return /^video\//.test(f.mimeType); }).length;
+        if (!files.length) throw new Error('Nothing visible: the folder is empty or not shared as ‘Anyone with the link – Viewer’.');
+        return '✓ ' + subs.length + ' album' + (subs.length === 1 ? '' : 's') + ', ' + photos + ' photo' + (photos === 1 ? '' : 's') + ', ' + videos + ' video' + (videos === 1 ? '' : 's') + ' found';
+      });
+    });
   }
 
   /* ---------- Google Form help ---------- */
@@ -2302,7 +2398,11 @@
       if (rows.some(function (r) { return r.k === k; })) return;
       var info = SECTIONS[k];
       if (k === 'nav') rows.push({ k: k, label: 'Menu links', path: ['nav'] });
-      else if (info && info.list) rows.push({ k: k, label: info.label + ': ' + labelFor([k].concat(info.list.split('.'))).toLowerCase(), path: [k].concat(info.list.split('.')) });
+      else if (info && info.list) {
+        var lp = [k].concat(info.list.split('.')), ll = labelFor(lp);
+        var a = info.label.toLowerCase(), b = ll.toLowerCase();
+        rows.push({ k: k, label: (b.indexOf(a) >= 0 || a.indexOf(b) >= 0) ? ll : info.label + ': ' + b, path: lp });
+      }
     });
     rows.push({ k: '__photos', label: 'Gallery: photos (all albums)', fn: function (o) { var a = o && o.gallery && o.gallery.albums; return Array.isArray(a) ? a.reduce(function (n, x) { return n + ((x && x.images && x.images.length) || 0); }, 0) : '—'; } });
     return rows;

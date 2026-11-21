@@ -7,7 +7,12 @@ A static website with no build step. It's made of these files:
 | `index.html` | The whole website: design, animations and the first-aid avatar scenes |
 | `content.json` | **All the words, photos, numbers, links and colours.** This is the only file you change to update the site. |
 | `admin.js` | The admin panel. It only loads when someone opens `yoursite.com/#admin`, so visitors never download it. |
+| `parts/lab-scenes.js` | The animated first-aid avatars (CPR, AED, recovery position, choking, bleeding, burns) |
+| `images/` | Local images (currently the 3 AI illustrations) |
+| `backups/` | Earlier versions of the design. You don't need to upload this folder. |
 | `README.md` | This guide |
+
+**Upload everything except `backups/` and `company-brief.md`.** On GitHub, drag the `parts` and `images` folders in as folders.
 
 ---
 
@@ -63,7 +68,35 @@ From now on, every time a file changes on GitHub, Vercel updates the site automa
 
 ---
 
-## 3. Enrolment form: answers arrive in Excel
+## 3. Photo galleries from Google Drive (recommended for lots of training photos)
+
+Upload photos and videos to Google Drive. The website shows them automatically and you never need to re-upload `content.json` for new photos.
+
+**One-time setup (about 10 minutes): create a free Google API key**
+1. Go to **console.cloud.google.com** and sign in with the Google account that owns the Drive folders.
+2. At the top, click **Select a project**, then **New project**. Name it `firstaid-website` and click **Create**.
+3. In the search bar type **Google Drive API**, open it and click **Enable**.
+4. Go to **APIs & Services**, then **Credentials**, then **+ Create credentials**, then **API key**. Copy the key.
+5. Click **Edit API key** (or the key's name) and restrict it:
+   - **Application restrictions:** choose *Websites* and add `https://firstaidswedenbd.com/*`, `https://*.firstaidswedenbd.com/*` and `https://*.vercel.app/*`
+   - **API restrictions:** choose *Restrict key* and pick **Google Drive API**
+   - Click **Save**.
+6. In the admin panel, open **Settings**, paste the key into **Google API key**, then download and publish `content.json` once.
+
+**Every time you add photos**
+1. In Google Drive, create a folder per category, e.g. `Website / Trainings`, `Website / Events`.
+2. Inside a category folder, create **one subfolder per album** (e.g. `Grameenphone CPR – Nov 2026`). Each subfolder becomes an album on the site, with its photos and videos. Photos placed directly in the category folder become one album named after the category.
+3. Right-click the category folder, choose **Share**, then **General access: Anyone with the link (Viewer)**, then **Copy link**.
+4. In the admin panel, go to **Gallery → Drive sources**, choose the category, paste the link and click **Check folder**. It tells you how many albums, photos and videos it found.
+5. Publish `content.json` once. From then on, new photos you drop into those Drive folders appear on the site within a few minutes, with no further publishing needed.
+
+You can also paste a Drive folder link into a single album's **Drive folder** field to fill just that album.
+
+> Tips: use JPG/PNG/WebP photos under ~5 MB each. Videos play inside the page via Google Drive's player. Don't put private documents in shared folders, because anyone with the link can see them.
+
+---
+
+## 4. Enrolment form: answers arrive in Excel
 
 The enrolment form on the website sends answers **straight into your existing Google Form** ("First Aid, CPR, BLS Training"). The fields are already connected.
 
@@ -81,14 +114,14 @@ The enrolment form on the website sends answers **straight into your existing Go
 
 ---
 
-## 4. Change colours and fonts
+## 5. Change colours and fonts
 
 - **Colours:** in the admin panel under **Brand → Colors** (primary blue, accent amber, ink, paper, emergency red). Changes show in the preview at once.
 - **Fonts** (needs a small code edit): open `index.html` on GitHub (pencil icon ✏️) and find the line starting `<link href="https://fonts.googleapis.com/css2?family=...`. Change the font names there and in the line starting `--fd:` (headings) and `--fb:` (body text). Pick fonts at fonts.google.com.
 
 ---
 
-## 5. Things to know
+## 6. Things to know
 
 - **Videos** (YouTube, Vimeo or a direct .mp4 link) play inside the page in a full-screen player. Visitors never leave the site.
 - **Contact buttons** (Call, WhatsApp, Email, Visit, and the green WhatsApp bubble) open a popup with a QR code plus an "open directly" button.
@@ -96,4 +129,6 @@ The enrolment form on the website sends answers **straight into your existing Go
 - **First Aid Lab:** animated avatars show CPR, AED, recovery position, choking, bleeding and burns, plus a CPR rhythm game. A disclaimer says it doesn't replace certified training.
 - **Accessibility:** if a visitor's phone or computer is set to "reduce motion", heavy animations switch off automatically.
 - **Social sharing preview** (the picture and text Facebook/WhatsApp show for a link) comes from the top of `index.html` (`og:` lines), because Facebook doesn't read `content.json`. Edit those lines on GitHub if you want to change them.
+- **AI illustrations:** the 3 images in `images/` (CPR class, AED cabinet, first aid kit) were made with Canva AI and are labelled "AI illustration" on the site. The files here are small previews. For full quality, open your Canva account, go to **Projects → Uploads**, download each one and replace the file with the same name (or upload it in the admin panel under Training → Image and Equipment → Banners).
+- **The header** works like a live patient monitor. The heart rate rises as visitors scroll faster and calms down when they stop. The red strip shows first-aid tips (edit them under **Ticker** in the admin panel) and the 999 emergency button.
 - **Backups of designs:** every time the design changes, the previous version is kept in the `backups/` folder.

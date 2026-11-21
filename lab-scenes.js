@@ -81,6 +81,7 @@
       '<radialGradient id="' + p + 'shadow"><stop offset="0" stop-color="#02040F" stop-opacity=".62"/><stop offset="1" stop-color="#02040F" stop-opacity="0"/></radialGradient>' +
       '</defs>';
   }
+  function zoomG(cx, cy, s, inner) { return '<g transform="translate(' + cx + ',' + cy + ') scale(' + s + ') translate(' + (-cx) + ',' + (-cy) + ')">' + inner + '</g>'; }
   function glow(p, cx, cy, rx, ry) { return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="url(#' + p + 'glow)"/>'; }
   function shadow(p, cx, cy, rx, ry, k) { return '<ellipse ' + (k ? 'data-k="' + k + '" ' : '') + 'cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="url(#' + p + 'shadow)"/>'; }
   function floorLine(y, x1, x2, C) {
@@ -219,7 +220,6 @@
   function pop(tl, el, t, d) {
     tl.fromTo(el, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: d || 0.45, ease: 'back.out(2.2)', transformOrigin: '50% 50%', immediateRender: false }, t);
   }
-  function fade(tl, el, v, t, d) { tl.to(el, { opacity: v, duration: d || 0.35, ease: 'sine.inOut' }, t); }
   function sparkleBurst(tl, els, t) {
     els.forEach(function (el, i) {
       tl.fromTo(el, { scale: 0, opacity: 1, rotation: 0 }, { scale: 1, opacity: 0, rotation: 90, duration: 0.7, ease: 'power2.out', transformOrigin: '50% 50%', immediateRender: false }, t + i * 0.08);
@@ -236,48 +236,50 @@
 
     var markup =
       glow(p, 290, 250, 280, 170) +
-      sparkles(C, [[58, 250], [540, 70], [470, 150], [560, 300], [210, 60]]) +
-      shadow(p, 330, 342, 160, 12) + shadow(p, 340, 328, 70, 8) +
-      floorLine(341, 120, 520, C) +
-      // compression counter
+      sparkles(C, [[58, 250], [540, 70], [470, 150], [560, 300], [210, 40]]) +
+      // compression counter (HUD, not zoomed)
       '<g data-k="' + p + 'ctr" opacity="0">' +
-      '<circle cx="104" cy="104" r="54" fill="#070B22" fill-opacity=".45"/>' +
-      '<circle cx="104" cy="104" r="40" fill="none" stroke="' + C.ice + '" stroke-opacity=".12" stroke-width="7"/>' +
-      '<circle data-k="' + p + 'ctrRing" cx="104" cy="104" r="40" fill="none" stroke="' + C.amber + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '" transform="rotate(-90 104 104)"/>' +
-      '<text data-k="' + p + 'ctrNum" x="104" y="118" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="40" fill="' + C.amber + '">0</text>' +
-      '<text x="104" y="178" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="11" letter-spacing="2.2" fill="' + C.ice + '" fill-opacity=".78">COMPRESSIONS</text>' +
-      '<text x="104" y="194" text-anchor="middle" font-family="' + FONT + '" font-weight="500" font-size="11" letter-spacing="1" fill="' + C.ice + '" fill-opacity=".5">100–120 / MIN</text>' +
+      '<circle cx="96" cy="96" r="54" fill="#070B22" fill-opacity=".45"/>' +
+      '<circle cx="96" cy="96" r="40" fill="none" stroke="' + C.ice + '" stroke-opacity=".12" stroke-width="7"/>' +
+      '<circle data-k="' + p + 'ctrRing" cx="96" cy="96" r="40" fill="none" stroke="' + C.amber + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '" transform="rotate(-90 96 96)"/>' +
+      '<text data-k="' + p + 'ctrNum" x="96" y="110" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="40" fill="' + C.amber + '">0</text>' +
+      '<text x="96" y="170" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="11" letter-spacing="2.2" fill="' + C.ice + '" fill-opacity=".78">COMPRESSIONS</text>' +
+      '<text x="96" y="186" text-anchor="middle" font-family="' + FONT + '" font-weight="500" font-size="11" letter-spacing="1" fill="' + C.ice + '" fill-opacity=".5">100–120 / MIN</text>' +
       '</g>' +
-      // rescuer lower body + torso (behind patient)
-      R.legB + R.legF + R.torso + R.head +
-      // patient
-      P.legB + P.armB + P.torso + P.head + P.legF + P.armF +
-      '<ellipse data-k="' + p + 'breath" cx="304" cy="306" rx="46" ry="16" fill="url(#' + p + 'cool)" opacity="0"/>' +
-      // rescuer arms on top
-      R.armB + R.armF +
-      // fx
-      ring(p + 'cr', 289, 306, 16, C.amber, 2.5) +
-      ring(p + 'tap1', 270, 304, 12, C.ice, 2) + ring(p + 'tap2', 270, 304, 12, C.ice, 2) +
-      '<g data-k="' + p + 'q1" opacity="0"><circle cx="226" cy="168" r="15" fill="' + C.ice + '" fill-opacity=".14"/><text x="226" y="176" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="22" fill="' + C.amber + '">?</text></g>' +
-      '<g data-k="' + p + 'q2" opacity="0"><circle cx="200" cy="140" r="12" fill="' + C.ice + '" fill-opacity=".14"/><text x="200" y="147" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="18" fill="' + C.amber + '">?</text></g>' +
-      '<g data-k="' + p + 'q3" opacity="0"><circle cx="246" cy="134" r="10" fill="' + C.ice + '" fill-opacity=".14"/><text x="246" y="140" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="15" fill="' + C.amber + '">?</text></g>' +
-      // phone in hand
-      ring(p + 'ph1', 300, 182, 16, C.amber, 2.5) + ring(p + 'ph2', 300, 182, 16, C.amber, 2.5) + ring(p + 'ph3', 300, 182, 16, C.amber, 2.5) +
-      '<g data-k="' + p + 'phone" opacity="0"><g transform="translate(299,182) rotate(-12)"><rect x="-6.5" y="-13" width="13" height="24" rx="3.5" fill="' + C.ice + '"/><rect x="-4.5" y="-9.5" width="9" height="15" rx="1.5" fill="#283090"/></g></g>' +
-      '<g data-k="' + p + 'call" opacity="0"><rect x="318" y="118" width="96" height="30" rx="15" fill="' + C.red + '"/>' +
-      '<text x="366" y="139" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="15" letter-spacing="1" fill="' + C.ice + '">CALL 999</text>' +
-      '<path d="M320,150 L314,160 L332,148 Z" fill="' + C.red + '"/></g>' +
-      '<g data-k="' + p + 'aedtag" opacity="0"><rect x="420" y="118" width="64" height="30" rx="15" fill="none" stroke="' + C.amber + '" stroke-width="2"/>' +
-      '<text x="452" y="138.5" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="13" letter-spacing="1.2" fill="' + C.amber + '">+ AED</text></g>';
+      zoomG(300, 330, 1.25,
+        shadow(p, 330, 342, 160, 12) + shadow(p, 340, 328, 70, 8) +
+        floorLine(341, 150, 500, C) +
+        // rescuer lower body + torso (behind patient)
+        R.legB + R.legF + R.torso + R.head +
+        // patient
+        P.legB + P.armB + P.torso + P.head + P.legF + P.armF +
+        '<ellipse data-k="' + p + 'breath" cx="304" cy="306" rx="46" ry="16" fill="url(#' + p + 'cool)" opacity="0"/>' +
+        // rescuer arms on top
+        R.armB + R.armF +
+        // fx
+        ring(p + 'cr', 289, 306, 16, C.amber, 2.5) +
+        ring(p + 'tap1', 270, 304, 12, C.ice, 2) + ring(p + 'tap2', 270, 304, 12, C.ice, 2) +
+        '<g data-k="' + p + 'q1" opacity="0"><circle cx="230" cy="172" r="14" fill="' + C.ice + '" fill-opacity=".14"/><text x="230" y="179.5" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="20" fill="' + C.amber + '">?</text></g>' +
+        '<g data-k="' + p + 'q2" opacity="0"><circle cx="208" cy="148" r="11" fill="' + C.ice + '" fill-opacity=".14"/><text x="208" y="154" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="16" fill="' + C.amber + '">?</text></g>' +
+        '<g data-k="' + p + 'q3" opacity="0"><circle cx="246" cy="146" r="9" fill="' + C.ice + '" fill-opacity=".14"/><text x="246" y="151" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="13" fill="' + C.amber + '">?</text></g>' +
+        // phone in hand
+        ring(p + 'ph1', 300, 182, 16, C.amber, 2.2) + ring(p + 'ph2', 300, 182, 16, C.amber, 2.2) + ring(p + 'ph3', 300, 182, 16, C.amber, 2.2) +
+        '<g data-k="' + p + 'phone" opacity="0"><g transform="translate(299,182) rotate(-12)"><rect x="-6.5" y="-13" width="13" height="24" rx="3.5" fill="' + C.ice + '"/><rect x="-4.5" y="-9.5" width="9" height="15" rx="1.5" fill="#283090"/></g></g>' +
+        '<g data-k="' + p + 'call" opacity="0"><rect x="320" y="134" width="88" height="27" rx="13.5" fill="' + C.red + '"/>' +
+        '<text x="364" y="152.5" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="13" letter-spacing="1" fill="' + C.ice + '">CALL 999</text>' +
+        '<path d="M324,156 L314,170 L336,158 Z" fill="' + C.red + '"/></g>' +
+        '<g data-k="' + p + 'aedtag" opacity="0"><rect x="414" y="134" width="60" height="27" rx="13.5" fill="none" stroke="' + C.amber + '" stroke-width="2"/>' +
+        '<text x="444" y="152" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="12" letter-spacing="1.2" fill="' + C.amber + '">+ AED</text></g>'
+      );
 
     function build(svg, emit) {
       var q = function (n) { return svg.querySelector('[data-k="' + p + n + '"]'); };
       var rR = R.bind(svg), rP = P.bind(svg);
       var PB = { x: 330, y: 322, a: -90, n: 0, c: 1, hfx: 350, hfy: 330, hbx: 346, hby: 332, ffx: 416, ffy: 324, fbx: 412, fby: 326, tf: -90, tb: -90 };
-      var RA = { x: 305, y: 278, a: -28, n: 8, hfx: 273, hfy: 299, hbx: 265, hby: 300, ffx: 350, ffy: 318, fbx: 356, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var RB = { x: 308, y: 276, a: -6, n: -4, hfx: 303, hfy: 188, hbx: 296, hby: 292, ffx: 350, ffy: 318, fbx: 356, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var RC = { x: 325, y: 276, a: -35, n: 12, hfx: 288, hfy: 301, hbx: 290, hby: 300, ffx: 366, ffy: 318, fbx: 372, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var RD = { x: 328, y: 298, a: -72, n: 6, hfx: 222, hfy: 308, hbx: 250, hby: 311, ffx: 334, ffy: 318, fbx: 340, fby: 318, tf: 180, tb: 180, ef: -1, eb: -1 };
+      var RA = { x: 305, y: 278, a: -28, n: 8, hfx: 273, hfy: 299, hbx: 265, hby: 300, ffx: 352, ffy: 316, fbx: 358, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var RB = { x: 308, y: 276, a: -6, n: -4, hfx: 303, hfy: 188, hbx: 296, hby: 292, ffx: 352, ffy: 316, fbx: 358, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var RC = { x: 325, y: 276, a: -35, n: 12, hfx: 288, hfy: 301, hbx: 290, hby: 300, ffx: 368, ffy: 316, fbx: 374, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var RD = { x: 328, y: 298, a: -72, n: 6, hfx: 222, hfy: 308, hbx: 250, hby: 311, ffx: 334, ffy: 316, fbx: 340, fby: 316, tf: 180, tb: 180, ef: -1, eb: -1 };
       var RS = assign({}, RA), PS = assign({}, PB), S = { comp: 0, breath: 0, count: 0 };
       var num = q('ctrNum'), br = q('breath'), lastCount = -1;
       function render() {
@@ -376,23 +378,9 @@
     var ax = 66, ay = 284; // AED body origin
 
     var screenClip = p + 'scr';
-    var markup =
-      '<defs><clipPath id="' + screenClip + '"><rect x="' + (ax + 11) + '" y="' + (ay + 15) + '" width="46" height="28" rx="5"/></clipPath></defs>' +
-      glow(p, 300, 250, 290, 175) +
-      sparkles(C, [[44, 120], [250, 70], [410, 200], [565, 250], [140, 190]]) +
+    var scene =
       shadow(p, 345, 342, 170, 12) + shadow(p, 113, 343, 60, 7) +
-      floorLine(341, 50, 540, C) +
-      // inset: pad placement diagram
-      '<g data-k="' + p + 'inset" opacity=".9">' +
-      '<circle cx="508" cy="96" r="64" fill="#0C1238" stroke="' + C.ice + '" stroke-opacity=".14" stroke-width="1.5"/>' +
-      '<circle cx="508" cy="96" r="70" fill="none" stroke="' + C.amber + '" stroke-opacity=".25" stroke-width="1.5" stroke-dasharray="3 6"/>' +
-      '<circle cx="508" cy="52" r="12" fill="' + C.skin3 + '" fill-opacity=".85"/>' +
-      '<path d="M480,74 Q508,64 536,74 Q544,78 545,96 L540,152 L476,152 L471,96 Q472,78 480,74 Z" fill="' + C.skin3 + '" fill-opacity=".85"/>' +
-      '<path d="M512,95 c0,-4 5,-5.5 7,-2 c2,-3.5 7,-2 7,2 c0,4.5 -7,8.5 -7,8.5 c0,0 -7,-4 -7,-8.5 Z" fill="' + C.red + '" opacity=".85"/>' +
-      '<g data-k="' + p + 'ip1" opacity="0"><rect x="482" y="78" width="21" height="14" rx="3" fill="' + C.ice + '" transform="rotate(-12 492 85)"/><rect x="485" y="82" width="14" height="2.5" rx="1" fill="' + C.amber + '" transform="rotate(-12 492 85)"/></g>' +
-      '<g data-k="' + p + 'ip2" opacity="0"><rect x="527" y="102" width="14" height="22" rx="3" fill="' + C.ice + '" transform="rotate(-14 534 113)"/><rect x="530" y="106" width="2.5" height="14" rx="1" fill="' + C.amber + '" transform="rotate(-14 534 113)"/></g>' +
-      '<text x="508" y="180" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="10" letter-spacing="2" fill="' + C.ice + '" fill-opacity=".6">PAD PLACEMENT</text>' +
-      '</g>' +
+      floorLine(341, 50, 520, C) +
       // AED device
       '<g>' +
       '<rect x="' + ax + '" y="' + ay + '" width="94" height="58" rx="12" fill="' + C.ice + '"/>' +
@@ -408,29 +396,45 @@
       '<circle cx="' + (ax + 77) + '" cy="' + (ay + 31) + '" r="10.5" fill="#F3D2D5"/>' +
       '<circle data-k="' + p + 'btn" cx="' + (ax + 77) + '" cy="' + (ay + 31) + '" r="8.5" fill="' + C.red + '" opacity=".55"/>' +
       '<path d="M' + (ax + 78) + ',' + (ay + 25) + ' l-4,7 h3.6 l-1.6,5.4 l5,-7.4 h-3.6 z" fill="#fff"/>' +
-      '<rect x="' + (ax + 92) + '" y="' + (ay + 28) + '" width="6" height="10" rx="2" fill="#9AA3D8"/>' +
+      '<rect x="' + (ax + 92) + '" y="' + (ay + 28) + '" width="6" height="12" rx="2" fill="#9AA3D8"/>' +
       '</g>' +
       // lid (hinged on the left)
       '<g data-k="' + p + 'lid"><rect x="' + (ax - 2) + '" y="' + (ay - 10) + '" width="98" height="15" rx="7" fill="' + C.amber + '"/>' +
       '<rect x="' + (ax + 32) + '" y="' + (ay - 16) + '" width="30" height="8" rx="4" fill="none" stroke="' + C.amber + '" stroke-width="3"/>' +
       '<path d="M' + (ax + 44) + ',' + (ay - 6) + ' h6 M' + (ax + 47) + ',' + (ay - 9) + ' v6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></g>' +
       // speaker waves
-      '<path data-k="' + p + 'sw1" d="M' + (ax + 102) + ',' + (ay + 2) + ' a10,10 0 0 1 0,16" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
-      '<path data-k="' + p + 'sw2" d="M' + (ax + 108) + ',' + (ay - 3) + ' a16,16 0 0 1 0,26" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
-      '<path data-k="' + p + 'sw3" d="M' + (ax + 114) + ',' + (ay - 8) + ' a22,22 0 0 1 0,36" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
-      // people
+      '<path data-k="' + p + 'sw1" d="M' + (ax + 104) + ',' + (ay - 2) + ' a10,10 0 0 1 0,16" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
+      '<path data-k="' + p + 'sw2" d="M' + (ax + 110) + ',' + (ay - 7) + ' a16,16 0 0 1 0,26" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
+      '<path data-k="' + p + 'sw3" d="M' + (ax + 116) + ',' + (ay - 12) + ' a22,22 0 0 1 0,36" stroke="' + C.amber + '" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0"/>' +
+      // people (wires run on the floor behind the patient)
       R.legB + R.legF + R.torso + R.head +
+      '<path data-k="' + p + 'w1" d="M' + (ax + 98) + ',' + (ay + 33) + ' C196,336 236,332 262,324 C286,316 298,312 304,301" stroke="#9AA3D8" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+      '<path data-k="' + p + 'w2" d="M' + (ax + 98) + ',' + (ay + 37) + ' C210,346 266,338 300,328 C318,322 326,314 330,301" stroke="#9AA3D8" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
       P.legB + P.armB + P.torso + P.head + P.legF + P.armF +
-      // wires + pads
-      '<path data-k="' + p + 'w1" d="M' + (ax + 98) + ',' + (ay + 33) + ' C200,250 258,236 302,300" stroke="#9AA3D8" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-      '<path data-k="' + p + 'w2" d="M' + (ax + 98) + ',' + (ay + 36) + ' C220,214 300,214 330,300" stroke="#9AA3D8" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-      '<g data-k="' + p + 'pad1" opacity="0"><g data-k="' + p + 'pad1a"><rect x="-14" y="-4.5" width="28" height="9" rx="3.5" fill="' + C.ice + '"/><rect x="-9" y="-1.6" width="18" height="3" rx="1.5" fill="' + C.amber + '"/></g></g>' +
-      '<g data-k="' + p + 'pad2" opacity="0"><g data-k="' + p + 'pad2a"><rect x="-14" y="-4.5" width="28" height="9" rx="3.5" fill="' + C.ice + '"/><rect x="-9" y="-1.6" width="18" height="3" rx="1.5" fill="' + C.amber + '"/></g></g>' +
+      '<g data-k="' + p + 'pad1" opacity="0"><rect x="-14" y="-4.5" width="28" height="9" rx="3.5" fill="' + C.ice + '"/><rect x="-9" y="-1.6" width="18" height="3" rx="1.5" fill="' + C.amber + '"/></g>' +
+      '<g data-k="' + p + 'pad2" opacity="0"><rect x="-14" y="-4.5" width="28" height="9" rx="3.5" fill="' + C.ice + '"/><rect x="-9" y="-1.6" width="18" height="3" rx="1.5" fill="' + C.amber + '"/></g>' +
       R.armB + R.armF +
       // alerts
       ring(p + 'al1', 318, 280, 30, C.amber, 2.5) + ring(p + 'al2', 318, 280, 30, C.amber, 2.5) +
       '<g data-k="' + p + 'bolt" opacity="0"><path d="M318,196 L292,246 L312,246 L298,290 L340,232 L318,232 L332,196 Z" fill="' + C.amber + '" stroke="' + C.ice + '" stroke-width="3" stroke-linejoin="round"/></g>' +
-      ring(p + 'sh1', 318, 300, 24, C.red, 3) + ring(p + 'sh2', 318, 300, 24, C.amber, 3) +
+      ring(p + 'sh1', 318, 300, 24, C.red, 3) + ring(p + 'sh2', 318, 300, 24, C.amber, 3);
+
+    var markup =
+      '<defs><clipPath id="' + screenClip + '"><rect x="' + (ax + 11) + '" y="' + (ay + 15) + '" width="46" height="28" rx="5"/></clipPath></defs>' +
+      glow(p, 300, 250, 290, 175) +
+      sparkles(C, [[44, 120], [250, 100], [410, 210], [565, 250], [140, 190]]) +
+      // inset: pad placement diagram
+      '<g data-k="' + p + 'inset" opacity=".9">' +
+      '<circle cx="508" cy="96" r="64" fill="#0C1238" stroke="' + C.ice + '" stroke-opacity=".14" stroke-width="1.5"/>' +
+      '<circle cx="508" cy="96" r="70" fill="none" stroke="' + C.amber + '" stroke-opacity=".25" stroke-width="1.5" stroke-dasharray="3 6"/>' +
+      '<circle cx="508" cy="52" r="12" fill="' + C.skin3 + '" fill-opacity=".85"/>' +
+      '<path d="M480,74 Q508,64 536,74 Q544,78 545,96 L540,152 L476,152 L471,96 Q472,78 480,74 Z" fill="' + C.skin3 + '" fill-opacity=".85"/>' +
+      '<path d="M512,95 c0,-4 5,-5.5 7,-2 c2,-3.5 7,-2 7,2 c0,4.5 -7,8.5 -7,8.5 c0,0 -7,-4 -7,-8.5 Z" fill="' + C.red + '" opacity=".85"/>' +
+      '<g data-k="' + p + 'ip1" opacity="0"><rect x="482" y="78" width="21" height="14" rx="3" fill="' + C.ice + '" transform="rotate(-12 492 85)"/><rect x="485" y="82" width="14" height="2.5" rx="1" fill="' + C.amber + '" transform="rotate(-12 492 85)"/></g>' +
+      '<g data-k="' + p + 'ip2" opacity="0"><rect x="527" y="102" width="14" height="22" rx="3" fill="' + C.ice + '" transform="rotate(-14 534 113)"/><rect x="530" y="106" width="2.5" height="14" rx="1" fill="' + C.amber + '" transform="rotate(-14 534 113)"/></g>' +
+      '<text x="508" y="180" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="10" letter-spacing="2" fill="' + C.ice + '" fill-opacity=".6">PAD PLACEMENT</text>' +
+      '</g>' +
+      zoomG(280, 340, 1.12, scene) +
       '<g data-k="' + p + 'pillA" opacity="0"><rect x="150" y="30" width="232" height="34" rx="17" fill="' + C.amber + '"/>' +
       '<text x="266" y="53" text-anchor="middle" font-family="' + FONT + '" font-weight="700" font-size="14" letter-spacing="1.4" fill="#0A0F2C">ANALYSING · STAND CLEAR</text></g>' +
       '<g data-k="' + p + 'pillB" opacity="0"><rect x="176" y="30" width="180" height="34" rx="17" fill="' + C.red + '"/>' +
@@ -447,10 +451,10 @@
       gsap.set(w2, { strokeDasharray: L2, strokeDashoffset: L2 });
       var PAD0 = { x: ax + 46, y: ay + 22 };
       var PB = { x: 360, y: 322, a: -90, n: 0, c: 1, hfx: 380, hfy: 330, hbx: 376, hby: 332, ffx: 446, ffy: 324, fbx: 442, fby: 326, tf: -90, tb: -90 };
-      var Q0 = { x: 352, y: 278, a: -12, n: 6, hfx: 330, hfy: 292, hbx: 335, hby: 294, ffx: 396, ffy: 318, fbx: 402, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var Q1 = { x: 340, y: 278, a: -30, n: 14, hfx: 304, hfy: 297, hbx: 329, hby: 297, ffx: 384, ffy: 318, fbx: 390, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var Q2 = { x: 364, y: 274, a: 8, n: -4, hfx: 340, hfy: 176, hbx: 362, hby: 160, ffx: 398, ffy: 318, fbx: 404, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
-      var Q3 = { x: 355, y: 276, a: -35, n: 12, hfx: 318, hfy: 301, hbx: 320, hby: 300, ffx: 396, ffy: 318, fbx: 402, fby: 318, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var Q0 = { x: 352, y: 278, a: -12, n: 6, hfx: 330, hfy: 292, hbx: 335, hby: 294, ffx: 398, ffy: 316, fbx: 404, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var Q1 = { x: 340, y: 278, a: -30, n: 14, hfx: 304, hfy: 297, hbx: 329, hby: 297, ffx: 386, ffy: 316, fbx: 392, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var Q2 = { x: 366, y: 274, a: 12, n: -6, hfx: 344, hfy: 150, hbx: 366, hby: 142, ffx: 400, ffy: 316, fbx: 406, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
+      var Q3 = { x: 355, y: 276, a: -35, n: 12, hfx: 318, hfy: 301, hbx: 320, hby: 300, ffx: 398, ffy: 316, fbx: 404, fby: 316, tf: 180, tb: 180, ef: 1, eb: 1 };
       var RS = assign({}, Q0), PS = assign({}, PB), S = { comp: 0, jolt: 0 };
       function render() {
         var r = assign({}, RS), d = 6 * S.comp;
@@ -462,11 +466,12 @@
       var tl = gsap.timeline({ repeat: -1, paused: true, onUpdate: render });
       var E = 'power2.inOut';
       var lid = q('lid'), pad1 = q('pad1'), pad2 = q('pad2');
+      gsap.set([pad1, pad2], { x: PAD0.x, y: PAD0.y, rotation: 0, opacity: 0 });
       tl.set([pad1, pad2], { x: PAD0.x, y: PAD0.y, rotation: 0, opacity: 0 }, 0);
 
       // STEP 0 — open & power on
       tl.call(emit.step, [0], 0.01);
-      tl.to(lid, { rotation: -118, duration: 0.7, ease: 'back.out(1.4)', transformOrigin: '0% 100%' }, 0.4);
+      tl.to(lid, { rotation: -96, duration: 0.7, ease: 'back.out(1.4)', transformOrigin: '0% 100%' }, 0.4);
       tl.to(q('scrOn'), { opacity: 1, duration: 0.4 }, 0.9);
       tl.to(q('flat'), { opacity: 1, duration: 0.3 }, 1.0);
       tl.to(q('led'), { opacity: 1, duration: 0.2, yoyo: true, repeat: 5 }, 1.0);
@@ -480,14 +485,14 @@
       // STEP 1 — pads on
       var t1 = 3.3;
       tl.call(emit.step, [1], t1);
-      tl.to(RS, assign({ duration: 0.8, ease: E }, Q1, { hfx: 296, hfy: 268, hbx: 316, hby: 262 }), t1);
+      tl.to(RS, assign({ duration: 0.8, ease: E }, Q1, { hfx: 300, hfy: 280, hbx: 326, hby: 282 }), t1);
       // pad 1 flies to upper right chest
       tl.to(pad1, { opacity: 1, duration: 0.15 }, t1 + 0.3);
       tl.to(pad1, { x: 304, duration: 0.9, ease: 'power1.inOut' }, t1 + 0.3);
       tl.to(pad1, { y: 214, duration: 0.45, ease: 'power2.out' }, t1 + 0.3).to(pad1, { y: 302, duration: 0.45, ease: 'power2.in' }, t1 + 0.75);
       tl.to(pad1, { rotation: 360, duration: 0.9, ease: 'power1.inOut' }, t1 + 0.3);
       tl.to(RS, { hfx: Q1.hfx, hfy: Q1.hfy, duration: 0.35, ease: E }, t1 + 0.95);
-      tl.to(w1, { strokeDashoffset: 0, duration: 0.6, ease: 'power1.inOut' }, t1 + 1.1);
+      tl.to(w1, { strokeDashoffset: 0, duration: 0.6, ease: 'power1.inOut' }, t1 + 0.7);
       pop(tl, q('ip1'), t1 + 1.2);
       // pad 2 to lower left side
       tl.to(pad2, { opacity: 1, duration: 0.15 }, t1 + 1.3);
@@ -495,7 +500,7 @@
       tl.to(pad2, { y: 200, duration: 0.45, ease: 'power2.out' }, t1 + 1.3).to(pad2, { y: 302, duration: 0.45, ease: 'power2.in' }, t1 + 1.75);
       tl.to(pad2, { rotation: 360, duration: 0.9, ease: 'power1.inOut' }, t1 + 1.3);
       tl.to(RS, { hbx: Q1.hbx, hby: Q1.hby, duration: 0.35, ease: E }, t1 + 1.95);
-      tl.to(w2, { strokeDashoffset: 0, duration: 0.6, ease: 'power1.inOut' }, t1 + 2.1);
+      tl.to(w2, { strokeDashoffset: 0, duration: 0.6, ease: 'power1.inOut' }, t1 + 1.7);
       pop(tl, q('ip2'), t1 + 2.2);
 
       // STEP 2 — analysing, stand clear
@@ -579,8 +584,9 @@
       '<g data-k="' + p + 'body">' +
       shadow(p, 290, 214, 230, 70) +
       '<g>' + leg('N', pa, so) + '</g>' +
+      '<ellipse data-k="' + p + 'kneeSh" rx="20" ry="11" fill="#02040F" opacity="0"/>' +
       '<g>' + leg('F', paB, shade(so, -0.15)) + '</g>' +
-      '<circle data-k="' + p + 'kneeHi" r="12" fill="' + shade(pa, 0.35) + '" opacity="0"/>' +
+      '<g data-k="' + p + 'kneeHi" opacity="0"><circle r="14" fill="' + shade(pa, 0.18) + '"/><circle cx="-3" cy="-3" r="6" fill="#fff" opacity=".35"/></g>' +
       '<g>' + arm('N', sk, sh) + '</g>' +
       '<g data-k="' + p + 'torso">' +
       '<path d="M38,-31 L74,-28 Q84,-26 84,-14 L84,14 Q84,26 74,28 L38,31 Z" fill="' + pa + '"/>' +
@@ -590,16 +596,17 @@
       '</g>' +
       '<g data-k="' + p + 'head">' +
       '<rect x="10" y="-9" width="26" height="18" rx="6" fill="' + skB + '"/>' +
-      '<circle r="21" fill="' + sk + '"/>' +
-      '<g data-k="' + p + 'hair"><path d="M3,-22.6 A22.6,22.6 0 0 0 3,22.6 C-7,15 -11,7 -11,0 C-11,-7 -7,-15 3,-22.6 Z" fill="' + C.hair + '"/>' +
-      '<circle cx="2" cy="-20.5" r="4" fill="' + skB + '"/><circle cx="2" cy="20.5" r="4" fill="' + skB + '"/>' +
-      '<ellipse cx="12" cy="0" rx="4" ry="3.4" fill="' + shade(sk, -0.1) + '"/></g>' +
+      '<circle r="22" fill="' + sk + '"/>' +
+      '<g data-k="' + p + 'hair"><path d="M4,-23.6 A23.6,23.6 0 0 0 4,23.6 C-6,16 -10,8 -10,0 C-10,-8 -6,-16 4,-23.6 Z" fill="' + C.hair + '"/>' +
+      '<path d="M-14,-12 A17,17 0 0 0 -14,12" stroke="#fff" stroke-opacity=".14" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="3" cy="-21.5" r="4.2" fill="' + skB + '"/><circle cx="3" cy="21.5" r="4.2" fill="' + skB + '"/>' +
+      '<ellipse cx="13" cy="0" rx="4.2" ry="3.6" fill="' + shade(sk, -0.1) + '"/></g>' +
       '</g>' +
       '<g>' + arm('F', skB, shB) + '</g>' +
       '</g>' +
       // highlights
       ring(p + 'h0', 176, 284, 18, C.amber, 2.5) + ring(p + 'h1', 190, 214, 18, C.amber, 2.5) +
-      ring(p + 'h2', 344, 176, 18, C.amber, 2.5) + ring(p + 'h3', 176, 214, 22, C.amber, 2.5) +
+      ring(p + 'h2', 344, 176, 20, C.amber, 2.5) + ring(p + 'h3', 176, 214, 22, C.amber, 2.5) +
       '<g data-k="' + p + 'air" opacity="0"><path d="M140,232 C122,226 116,210 124,196" stroke="' + C.ice + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
       '<path d="M118,202 L124,194 L131,201" stroke="' + C.ice + '" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
       '<text x="104" y="186" font-family="' + FONT + '" font-weight="700" font-size="10" letter-spacing="1.6" fill="' + C.ice + '" fill-opacity=".8">AIRWAY OPEN</text></g>' +
@@ -607,15 +614,14 @@
 
     var REST = { sy: 1, dy: 0, roll: 0, hr: 0, ht: 0, palm: 0, knee: 0,
       nu: 6, nf: 2, fu: -6, ff: -2, lnu: 3, lnf: 0, lfu: -3, lff: 0, k1: 1, k2: 1 };
-    var P0 = { nu: 90, nf: 90, palm: 1 };
     var P1 = { fu: 77, ff: 84 };
-    var P2 = { lfu: -2, lff: 0, k1: 0.66, k2: 0.7, knee: 1 };
+    var P2 = { lfu: -2, lff: 0, k1: 0.6, k2: 0.66, knee: 1 };
     var P3 = { sy: 0.5, dy: 22, roll: 1, hr: 78, ht: -8, fu: 74, ff: 111, lfu: 88, lff: -88, k1: 1, k2: 1, knee: 0, lnu: 2, lnf: 6, palm: 0 };
 
     function build(svg, emit) {
       var q = function (n) { return svg.querySelector('[data-k="' + p + n + '"]'); };
       var E = {};
-      'torso back head hair uaN elN faN hdN uaF elF faF hdF thN snN knN ftN thF snF knF ftF kneeHi palm'.split(' ').forEach(function (n) { E[n] = q(n); });
+      'torso back head hair uaN elN faN hdN uaF elF faF hdF thN snN knN ftN thF snF knF ftF kneeHi kneeSh palm'.split(' ').forEach(function (n) { E[n] = q(n); });
       var S = assign({}, REST);
       var L1 = 44, L2 = 46, G1 = 64, G2 = 62;
       function armR(X, sx, sy, u, fr) {
@@ -641,7 +647,8 @@
         armR('F', CX - 46, ty - 40 * S.sy, S.fu, S.ff);
         legR('N', CX + 62, ty + 15 * S.sy, S.lnu, S.lnf, 1, 1);
         var kn = legR('F', CX + 62, ty - 15 * S.sy, S.lfu, S.lff, S.k1, S.k2);
-        setT(E.kneeHi, ptT(kn[0], kn[1])); setO(E.kneeHi, S.knee * 0.85);
+        setT(E.kneeHi, ptT(kn[0], kn[1])); setO(E.kneeHi, S.knee);
+        setT(E.kneeSh, ptT(kn[0] + 12, kn[1] + 8)); setO(E.kneeSh, S.knee * 0.45);
         setO(E.palm, S.palm);
       }
       var tl = gsap.timeline({ repeat: -1, paused: true, onUpdate: render });
@@ -658,7 +665,7 @@
       tl.call(emit.step, [1], t1);
       tl.to(q('g1'), { opacity: 0.9, duration: 0.3 }, t1 + 0.1);
       tl.to(S, { fu: 40, ff: 60, duration: 0.7, ease: EZ }, t1 + 0.3);
-      tl.to(S, P1 && assign({ duration: 0.8, ease: EZ }, P1), t1 + 1.0);
+      tl.to(S, assign({ duration: 0.8, ease: EZ }, P1), t1 + 1.0);
       pulse(tl, q('h1'), t1 + 1.8, { from: 0.5, to: 1.9, dur: 0.9 });
       tl.to(q('g1'), { opacity: 0, duration: 0.3 }, t1 + 2.0);
       // STEP 2
@@ -695,26 +702,28 @@
     var R = sideRig(p + 'r', { dir: 1, skin: C.skin2, shirt: C.uni, pants: C.pants, shoe: C.sneaker, hair: 'short', sleeve: 'short', badge: true, collar: true, amber: C.amber });
     var markup =
       glow(p, 320, 230, 260, 190) +
-      sparkles(C, [[70, 90], [520, 60], [560, 260], [110, 300], [440, 330]]) +
-      shadow(p, 320, 352, 190, 12) +
-      floorLine(351, 90, 530, C) +
-      '<g data-k="' + p + 'figs">' +
-      R.armB + R.legB + R.torso + R.legF + R.head +
-      V.legB + V.armB + V.torso + V.legF + V.head + V.armF +
-      R.armF +
-      '</g>' +
-      // cough puffs
-      '<g data-k="' + p + 'cg" opacity="0"><circle data-k="' + p + 'c1" cx="0" cy="0" r="6" fill="' + C.ice + '" fill-opacity=".55"/><circle data-k="' + p + 'c2" cx="12" cy="-6" r="4.5" fill="' + C.ice + '" fill-opacity=".45"/><circle data-k="' + p + 'c3" cx="20" cy="3" r="3.5" fill="' + C.ice + '" fill-opacity=".35"/></g>' +
-      '<g data-k="' + p + 'cough" opacity="0"><text x="0" y="0" font-family="' + FONT + '" font-weight="700" font-size="14" letter-spacing="1" fill="' + C.ice + '" fill-opacity=".8">cough!</text></g>' +
-      '<g data-k="' + p + 'alert" opacity="0"><path d="M0,-12 l4,0 M-12,-2 l-4,-3 M12,-2 l4,-3" stroke="' + C.red + '" stroke-width="3" stroke-linecap="round"/></g>' +
-      ring(p + 'bb1', 0, 0, 12, C.amber, 3) + ring(p + 'bb2', 0, 0, 12, C.amber, 3) +
-      ring(p + 'at1', 0, 0, 12, C.ice, 3) + ring(p + 'at2', 0, 0, 12, C.ice, 3) +
-      '<g data-k="' + p + 'cnt" opacity="0"><rect x="34" y="34" width="134" height="34" rx="17" fill="#070B22" fill-opacity=".5" stroke="' + C.amber + '" stroke-opacity=".5"/>' +
-      '<text data-k="' + p + 'cntL" x="52" y="56" font-family="' + FONT + '" font-weight="700" font-size="12" letter-spacing="1.6" fill="' + C.ice + '" fill-opacity=".8">BACK BLOWS</text>' +
-      '<text data-k="' + p + 'cntN" x="154" y="57" text-anchor="end" font-family="' + FONT + '" font-weight="700" font-size="16" fill="' + C.amber + '">0/5</text></g>' +
-      '<g data-k="' + p + 'obj" opacity="0"><circle r="6.5" fill="' + C.amber + '"/><circle cx="-2" cy="-2" r="2" fill="#fff" fill-opacity=".7"/></g>' +
-      star(p + 's1', 0, 0, 10, C.amber) + star(p + 's2', 0, 0, 7, C.ice) + star(p + 's3', 0, 0, 6, C.amber) +
-      '<g data-k="' + p + 'ok" opacity="0"><path d="M0,0 c0,-5 6,-7 8.5,-2.5 c2.5,-4.5 8.5,-2.5 8.5,2.5 c0,5.5 -8.5,10.5 -8.5,10.5 c0,0 -8.5,-5 -8.5,-10.5 Z" fill="' + C.amber + '"/></g>';
+      sparkles(C, [[70, 110], [520, 60], [560, 260], [110, 300], [440, 360]]) +
+      zoomG(300, 352, 1.2,
+        shadow(p, 320, 352, 190, 12) +
+        floorLine(351, 110, 510, C) +
+        '<g data-k="' + p + 'figs">' +
+        R.legB + R.torso + R.legF + R.head +
+        V.legB + V.armB + V.torso + V.legF + V.head + V.armF +
+        R.armB + R.armF +
+        '</g>' +
+        // cough puffs
+        '<g data-k="' + p + 'cg" opacity="0"><circle cx="0" cy="0" r="6" fill="' + C.ice + '" fill-opacity=".55"/><circle cx="12" cy="-6" r="4.5" fill="' + C.ice + '" fill-opacity=".45"/><circle cx="20" cy="3" r="3.5" fill="' + C.ice + '" fill-opacity=".35"/></g>' +
+        '<g data-k="' + p + 'cough" opacity="0"><text x="0" y="0" font-family="' + FONT + '" font-weight="700" font-size="13" letter-spacing="1" fill="' + C.ice + '" fill-opacity=".85">cough!</text></g>' +
+        '<g data-k="' + p + 'alert" opacity="0"><path d="M0,-12 l4,0 M-12,-2 l-4,-3 M12,-2 l4,-3" stroke="' + C.red + '" stroke-width="3" stroke-linecap="round"/></g>' +
+        ring(p + 'bb1', 0, 0, 12, C.amber, 3) + ring(p + 'bb2', 0, 0, 12, C.amber, 3) +
+        ring(p + 'at1', 0, 0, 12, C.ice, 3) + ring(p + 'at2', 0, 0, 12, C.ice, 3) +
+        '<g data-k="' + p + 'obj" opacity="0"><circle r="5.5" fill="' + C.amber + '"/><circle cx="-1.6" cy="-1.6" r="1.8" fill="#fff" fill-opacity=".7"/></g>' +
+        star(p + 's1', 0, 0, 10, C.amber) + star(p + 's2', 0, 0, 7, C.ice) + star(p + 's3', 0, 0, 6, C.amber) +
+        '<g data-k="' + p + 'ok" opacity="0"><path d="M0,0 c0,-5 6,-7 8.5,-2.5 c2.5,-4.5 8.5,-2.5 8.5,2.5 c0,5.5 -8.5,10.5 -8.5,10.5 c0,0 -8.5,-5 -8.5,-10.5 Z" fill="' + C.amber + '"/></g>'
+      ) +
+      '<g data-k="' + p + 'cnt" opacity="0"><rect x="32" y="30" width="226" height="36" rx="18" fill="#070B22" fill-opacity=".5" stroke="' + C.amber + '" stroke-opacity=".5"/>' +
+      '<text data-k="' + p + 'cntL" x="52" y="53" font-family="' + FONT + '" font-weight="700" font-size="12" letter-spacing="1.6" fill="' + C.ice + '" fill-opacity=".85">BACK BLOWS</text>' +
+      '<text data-k="' + p + 'cntN" x="240" y="54" text-anchor="end" font-family="' + FONT + '" font-weight="700" font-size="17" fill="' + C.amber + '">0/5</text></g>';
 
     function build(svg, emit) {
       var q = function (n) { return svg.querySelector('[data-k="' + p + n + '"]'); };
@@ -724,26 +733,26 @@
       var V2 = { x: 352, y: 258, a: 22, n: 14, hfx: 386, hfy: 268, hbx: 380, hby: 272, ffx: 376, ffy: 343, fbx: 350, fby: 343, ef: 1, eb: 1 };
       var V3 = { x: 360, y: 257, a: -2, n: -8, hfx: 372, hfy: 226, hbx: 366, hby: 270, ffx: 376, ffy: 343, fbx: 350, fby: 343, ef: 1, eb: 1 };
       var R0 = { x: 170, y: 258, a: 0, n: 0, hfx: 178, hfy: 270, hbx: 166, hby: 270, ffx: 182, ffy: 343, fbx: 158, fby: 343, ef: 1, eb: 1 };
-      var R1 = { x: 310, y: 258, a: 22, n: 10, hfx: 386, hfy: 254, hbx: 340, hby: 152, ffx: 326, ffy: 343, fbx: 300, fby: 343, ef: 1, eb: 1 };
+      var R1 = { x: 310, y: 258, a: 22, n: 10, hfx: 386, hfy: 254, hbx: 384, hby: 166, ffx: 326, ffy: 343, fbx: 300, fby: 343, ef: 1, eb: 1 };
       var R2 = { x: 318, y: 260, a: 10, n: 6, hfx: 376, hfy: 246, hbx: 374, hby: 248, ffx: 334, ffy: 343, fbx: 306, fby: 343, ef: 1, eb: 1 };
       var R3 = { x: 302, y: 258, a: 4, n: 0, hfx: 346, hfy: 214, hbx: 306, hby: 270, ffx: 316, ffy: 343, fbx: 290, fby: 343, ef: 1, eb: 1 };
       var VS = assign({}, V0), RS = assign({}, R0);
-      var cntN = q('cntN'), cntL = q('cntL'), S = { n: 0, mode: 0 }, last = '';
+      var cntN = q('cntN'), cntL = q('cntL'), S = { n: 0, mode: 0 }, last = '', lastL = '';
       function render() {
         rR(RS); rV(VS);
         var txt = Math.round(S.n) + '/5';
         if (txt !== last) { last = txt; cntN.textContent = txt; }
-        var lab = S.mode > 0.5 ? 'ABDOMINAL' : 'BACK BLOWS';
-        if (cntL.textContent !== lab) cntL.textContent = lab;
+        var lab = S.mode > 0.5 ? 'ABDOMINAL THRUSTS' : 'BACK BLOWS';
+        if (lab !== lastL) { lastL = lab; cntL.textContent = lab; }
       }
       function place(el, xy) { gsap.set(el, { x: xy[0], y: xy[1] }); }
       var mouth0 = V.headPt(V0, 20, -24);
       place(q('cg'), [mouth0[0] + 8, mouth0[1] + 2]);
       place(q('cough'), [mouth0[0] + 22, mouth0[1] - 22]);
       place(q('alert'), V.headPt(V0, 2, -50));
-      var blow = [372, 214], thrust = [370, 242];
+      var blow = [372, 214];
       [q('bb1'), q('bb2')].forEach(function (e) { place(e, blow); });
-      [q('at1'), q('at2')].forEach(function (e) { place(e, thrust); });
+      [q('at1'), q('at2')].forEach(function (e) { place(e, [370, 242]); });
 
       var tl = gsap.timeline({ repeat: -1, paused: true, onUpdate: render });
       var EZ = 'power2.inOut';
@@ -768,13 +777,13 @@
       tl.to(RS, { fbx: 266, fby: 336, duration: 0.3, ease: 'sine.inOut' }, t1 + 0.45).to(RS, { fby: 343, duration: 0.25 }, t1 + 0.75);
       tl.to(RS, { ffx: R1.ffx, ffy: 336, duration: 0.3, ease: 'sine.inOut' }, t1 + 0.6).to(RS, { ffy: 343, duration: 0.25 }, t1 + 0.9);
       tl.to(RS, { fbx: R1.fbx, duration: 0.3, ease: 'sine.inOut' }, t1 + 0.95);
-      tl.to(RS, { hfx: 230, hfy: 268, hbx: 222, hby: 270, duration: 0.6, ease: 'sine.inOut' }, t1);
+      tl.to(RS, { hfx: R1.x + 10, hfy: 270, hbx: R1.x - 4, hby: 271, duration: 1.2, ease: 'sine.inOut' }, t1);
       tl.to(VS, assign({ duration: 0.8, ease: EZ }, V1), t1 + 1.0);
       tl.to(RS, assign({ duration: 0.8, ease: EZ }, R1), t1 + 1.0);
       tl.to(q('cnt'), { opacity: 1, duration: 0.3 }, t1 + 1.2);
       for (var b = 0; b < 5; b++) {
         var tb = t1 + 1.9 + b * 0.66;
-        tl.to(RS, { hbx: 334, hby: 150, duration: 0.3, ease: 'power2.out' }, tb);
+        tl.to(RS, { hbx: R1.hbx, hby: R1.hby, duration: 0.3, ease: 'power2.out' }, tb);
         tl.to(RS, { hbx: blow[0], hby: blow[1], duration: 0.14, ease: 'power3.in' }, tb + 0.3);
         tl.to(VS, { a: V1.a + 5, x: V1.x + 2, duration: 0.07, ease: 'power2.out' }, tb + 0.44).to(VS, { a: V1.a, x: V1.x, duration: 0.18, ease: 'sine.out' }, tb + 0.51);
         pulse(tl, q(b % 2 ? 'bb2' : 'bb1'), tb + 0.44, { from: 0.4, to: 2.4, dur: 0.55 });
@@ -886,6 +895,7 @@
       var g1 = q('g1'), g2 = q('g2');
       var H1 = { x: 196, y: 108 }, H2 = { x: 262, y: 100 }, PR1 = { x: 222, y: 226 }, PR2 = { x: 232, y: 216 };
       var tl = gsap.timeline({ repeat: -1, paused: true });
+      gsap.set(g1, { x: H1.x, y: -140 }); gsap.set(g2, { x: H2.x, y: -150 });
       tl.set(g1, { x: H1.x, y: -140, opacity: 1 }, 0).set(g2, { x: H2.x, y: -150, opacity: 1 }, 0);
       // wound pulsing / dripping during steps 0–1
       for (var i = 0; i < 6; i++) {
@@ -975,14 +985,15 @@
       // pan + flame
       '<g data-k="' + p + 'pan">' +
       shadow(p, 452, 342, 90, 8) +
-      '<rect x="398" y="330" width="110" height="8" rx="4" fill="#3A4280"/>' +
+      '<rect x="398" y="330" width="110" height="8" rx="4" fill="#4A53A0"/>' +
       '<g data-k="' + p + 'flame"><path d="M452,330 C432,326 430,306 442,294 C442,306 448,308 452,300 C454,312 460,310 462,300 C474,310 472,326 452,330 Z" fill="' + C.red + '"/>' +
       '<path d="M452,330 C442,328 440,316 448,308 C449,316 453,318 455,312 C462,318 462,328 452,330 Z" fill="' + C.amber + '"/>' +
       '<path d="M424,330 C414,326 416,314 422,310 C423,318 428,318 430,316 C434,322 432,330 424,330 Z" fill="' + C.red + '"/>' +
       '<path d="M482,330 C474,328 474,316 480,310 C481,318 486,318 488,315 C492,322 490,330 482,330 Z" fill="' + C.red + '"/></g>' +
-      '<path d="M380,268 L524,268 L514,294 Q452,304 390,294 Z" fill="#3A4280"/>' +
-      '<rect x="376" y="262" width="152" height="9" rx="4.5" fill="#5B64A8"/>' +
-      '<rect x="296" y="266" width="86" height="11" rx="5.5" fill="#2B3270"/>' +
+      '<path d="M380,268 L524,268 L514,294 Q452,304 390,294 Z" fill="#4A53A0"/>' +
+      '<path d="M392,282 Q452,290 512,282" stroke="#fff" stroke-opacity=".12" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+      '<rect x="376" y="262" width="152" height="9" rx="4.5" fill="#7A84CC"/>' +
+      '<rect x="300" y="266" width="82" height="11" rx="5.5" fill="#5B64A8"/>' +
       '<path data-k="' + p + 'hw1" d="M424,252 c-6,-8 6,-14 0,-22 c-6,-8 6,-14 0,-22" stroke="' + C.amber + '" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"/>' +
       '<path data-k="' + p + 'hw2" d="M452,252 c-6,-8 6,-14 0,-22 c-6,-8 6,-14 0,-22" stroke="' + C.red + '" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"/>' +
       '<path data-k="' + p + 'hw3" d="M480,252 c-6,-8 6,-14 0,-22 c-6,-8 6,-14 0,-22" stroke="' + C.amber + '" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"/>' +
@@ -1029,7 +1040,9 @@
       var hand = q('hand'), ringEl = q('ring');
       var A0 = { x: 150, y: 236 }, A1 = { x: 300, y: 252 }, AT = { x: 190, y: 246 }, AC = { x: 300, y: 238 };
       var tl = gsap.timeline({ repeat: -1, paused: true });
-      tl.set(hand, { x: A0.x, y: A0.y, rotation: 0 }, 0);
+      gsap.set(hand, { x: A0.x, y: A0.y });
+      gsap.set(q('hshadow'), { x: A0.x - 300 });
+      tl.set(hand, { x: A0.x, y: A0.y }, 0);
       tl.set(q('hshadow'), { x: A0.x - 300, opacity: 0.8 }, 0);
       // flame flicker + heat waves (step 0)
       tl.to(q('flame'), { scaleY: 1.14, scaleX: 0.96, duration: 0.16, yoyo: true, repeat: 19, ease: 'sine.inOut', transformOrigin: '50% 100%' }, 0);
@@ -1047,14 +1060,14 @@
       tl.set(q('cross'), { x: A1.x + 96, y: A1.y - 32 }, 1.4);
       tl.fromTo(q('cross'), { opacity: 0, scale: 0.4, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 45, duration: 0.3, ease: 'back.out(3)', transformOrigin: '50% 50%', immediateRender: false }, 1.45);
       tl.to(q('cross'), { opacity: 0, duration: 0.3 }, 2.1);
-      tl.to(hand, { x: A1.x - 70, y: A1.y - 16, rotation: -6, duration: 0.35, ease: 'power3.out' }, 1.55);
-      tl.to(q('hshadow'), { x: -70, duration: 0.35, ease: 'power3.out' }, 1.55);
+      tl.to(hand, { x: A1.x - 80, y: A1.y - 12, duration: 0.35, ease: 'power3.out' }, 1.55);
+      tl.to(q('hshadow'), { x: -80, duration: 0.35, ease: 'power3.out' }, 1.55);
       // STEP 1 — cool under running water 20 min
       var t1 = 3.4;
       tl.call(emit.step, [1], t1);
       tl.to(q('pan'), { opacity: 0, duration: 0.5 }, t1);
       tl.fromTo(q('tap'), { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', immediateRender: false }, t1 + 0.1);
-      tl.to(hand, { x: AT.x, y: AT.y, rotation: 0, duration: 0.9, ease: 'power2.inOut' }, t1 + 0.2);
+      tl.to(hand, { x: AT.x, y: AT.y, duration: 0.9, ease: 'power2.inOut' }, t1 + 0.2);
       tl.to(q('hshadow'), { x: AT.x - 300, duration: 0.9, ease: 'power2.inOut' }, t1 + 0.2);
       tl.fromTo(q('water'), { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.45, ease: 'power2.in', transformOrigin: '50% 0%', immediateRender: false }, t1 + 0.9);
       tl.to(q('wd1'), { strokeDashoffset: -30 * 24, duration: 7.6, ease: 'none' }, t1 + 0.9);
@@ -1130,8 +1143,10 @@
     var p = 'fa' + Math.random().toString(36).slice(2, 8) + '-';
     var sc = SCENES[id](p, C);
     el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' + sc.label + '" ' +
-      'style="width:100%;height:auto;display:block;overflow:visible" focusable="false">' + defs(p, C) + sc.markup + '</svg>';
+      'style="width:100%;height:auto;display:block;overflow:hidden" focusable="false">' + defs(p, C) + sc.markup + '</svg>';
     var svg = el.querySelector('svg');
+    // mini:true (e.g. a modal view) renders the same scene; every mount is fully independent
+    if (cbs.mini) svg.setAttribute('data-mini', '');
     var emit = { step: safe(cbs.onStep), count: safe(cbs.onCount) };
     var dead = false, timer = null, rIdx = 0, playing = true;
 
@@ -1166,7 +1181,7 @@
       tl.play(0);
     }
     return {
-      // debug/QA helper (undocumented): jump to time t (seconds) and hold
+      // QA helper (undocumented): jump to time t (seconds) and hold; returns loop duration
       _seek: function (t) { if (dead) return; playing = false; clearTimeout(timer); tl.pause(); tl.seek(t, true); api.render(); return tl.duration(); },
       play: function () {
         if (dead || playing) return;
