@@ -79,7 +79,7 @@ section{position:relative}
 #pre{position:fixed;inset:0;z-index:300;display:grid;place-items:center;pointer-events:none}
 #pre .half{position:absolute;left:0;right:0;height:50.5%;background:var(--ink)}
 #pre .half.t{top:0}#pre .half.b{bottom:0}
-#pre .core{position:relative;z-index:2;display:grid;justify-items:center;gap:22px;color:var(--on-dark)}
+#pre .core{position:relative;z-index:2;display:grid;justify-items:center;gap:22px;color:var(--on-dark);opacity:0}#pre.go .core{opacity:1}
 #pre .mark{width:120px;height:120px}
 #pre .ecg{width:min(420px,80vw);height:60px;overflow:visible}
 #pre .ecg path{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(248,176,64,.7))}
@@ -161,7 +161,7 @@ body.menu-open .burger span:last-child{transform:translateY(-3px) rotate(-45deg)
 .mesh i:nth-child(2){width:34vw;height:34vw;left:62%;top:45%;background:radial-gradient(circle,rgba(248,176,64,.45) 0,transparent 65%);animation-duration:22s}
 .mesh i:nth-child(3){width:40vw;height:40vw;left:5%;top:50%;background:radial-gradient(circle,rgba(75,88,224,.5) 0,transparent 65%);animation-duration:26s}
 @keyframes drift{to{transform:translate3d(-8vw,6vh,0) scale(1.15)}}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,5vw,72px);align-items:center}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(32px,5vw,72px);align-items:center}
 .hero .eyebrow{color:var(--accent)}
 .hero h1{font-size:clamp(2.75rem,7.4vw,6.6rem);line-height:.98;margin:0 0 28px;min-height:2em}
 .hero h1 .ln{display:block}
@@ -172,19 +172,19 @@ body.menu-open .burger span:last-child{transform:translateY(-3px) rotate(-45deg)
 .hero .lead{color:var(--on-dark-muted);margin-bottom:36px;min-height:3.1em}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
 .hero-visual{position:relative;perspective:1200px}
-.hframe{position:relative;aspect-ratio:4/3.2;border-radius:28px;overflow:hidden;background:var(--ink-2);transform-style:preserve-3d;box-shadow:0 40px 100px -30px rgba(0,0,0,.7)}
+.hframe{position:relative;aspect-ratio:16/9;border-radius:28px;overflow:hidden;background:var(--ink-2);transform-style:preserve-3d;box-shadow:0 40px 100px -30px rgba(0,0,0,.7)}
 .hframe::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,15,44,.55));pointer-events:none;z-index:4}
 .himg{position:absolute;inset:0;transition:clip-path 1.2s var(--ease);z-index:1}
-.himg img{width:100%;height:100%;object-fit:cover;transform:scale(1.18);transition:transform 6s var(--ease-o)}
+.himg img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 6s var(--ease-o)}
 .himg.on{z-index:3}.himg.was{z-index:2}
-.himg.on img{transform:scale(1.02)}
+.himg.on img{transform:scale(1)}
 .himg[data-fx="0"]{clip-path:inset(100% 0 0 0)}.himg[data-fx="0"].on,.himg[data-fx="0"].was{clip-path:inset(0 0 0 0)}
 .himg[data-fx="1"]{clip-path:circle(0% at 70% 35%)}.himg[data-fx="1"].on,.himg[data-fx="1"].was{clip-path:circle(150% at 70% 35%)}
 .himg[data-fx="2"]{clip-path:polygon(0 0,0 0,0 100%,0 100%)}.himg[data-fx="2"].on,.himg[data-fx="2"].was{clip-path:polygon(0 0,130% 0,100% 100%,0 100%)}
 .hchip{position:absolute;z-index:5;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:18px;background:rgba(20,27,74,.9);border:1px solid rgba(255,255,255,.12);font:500 14px/1.25 var(--fb);color:#fff;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
 .hchip b{display:block;font:700 18px/1.1 var(--fd)}
 .hchip .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:var(--ink)}
-.hchip.c1{left:-24px;bottom:18%}.hchip.c2{right:-18px;top:10%}
+.hchip.c1{left:-24px;bottom:-26px}.hchip.c2{right:-18px;top:-22px}
 .beat{animation:beat .545s infinite}
 @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(.96)}45%{transform:scale(1.08)}}
 .hero-ui{position:absolute;left:0;right:0;bottom:36px;z-index:3}
@@ -209,8 +209,8 @@ body.menu-open .burger span:last-child{transform:translateY(-3px) rotate(-45deg)
 @media (max-width:900px){
   .hero{padding-bottom:120px}
   .hero-grid{grid-template-columns:1fr;gap:40px}
-  .hframe{aspect-ratio:16/11}
-  .hchip.c1{left:12px;bottom:12px}.hchip.c2{right:12px;top:12px}
+  .hframe{aspect-ratio:16/9}
+  .hchip.c1{left:10px;bottom:-22px}.hchip.c2{right:10px;top:-20px}
   .scue{display:none}
 }
 @media (max-width:420px){.hchip{padding:8px 12px;font-size:12px}.hchip b{font-size:15px}.hchip .ico{width:32px;height:32px}.hero h1{font-size:clamp(2.5rem,11.6vw,3.4rem)}}
@@ -2511,10 +2511,20 @@ function fabs(c) {
 }
 
 /* ================= INIT ================= */
+let initGen = 0, introDone = false, pendingRest = null;
+const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 120 }) : setTimeout(fn, 16));
 function initAll(c) {
-  initHeader(c); initHero(c); initReveals(); initMarquee(); initAbout(); initStats(); initTraining(); initWords(); initModules();
-  initGuides(c); loadDrive(c); initLab(c); initTrainer(); initEquipment(c); initGallery(c); initTeam(c); initForm(c); initCert(c); initContact(c); initMagnetic(); initTilt(); initLifeline(); initBanners(); initFooter();
-  if (ST) { ST.refresh(); }
+  const gen = ++initGen;
+  initHeader(c); initHero(c);
+  const rest = [initReveals, initMarquee, initAbout, initStats, initTraining, initWords, initModules, () => initGuides(c), () => initLab(c), initTrainer, () => initEquipment(c), () => initGallery(c), () => initTeam(c), () => initForm(c), () => initCert(c), () => initContact(c), initMagnetic, initTilt, initBanners, initFooter, () => ST && ST.refresh(), initLifeline, () => loadDrive(c)];
+  const step = () => {
+    if (gen !== initGen) return;
+    const t0 = performance.now();
+    while (rest.length && performance.now() - t0 < 10) { try { rest.shift()(); } catch (e) { console.warn(e); } }
+    if (rest.length) idle(step);
+  };
+  pendingRest = () => { pendingRest = null; idle(step); };
+  if (introDone || PREVIEW) pendingRest();
 }
 function goTo(id) {
   const el = id === 'hero' ? document.body : document.getElementById(id);
@@ -2539,12 +2549,16 @@ function initHeader(c) {
     const v = e.target.closest('[data-video]'); if (v) { e.preventDefault(); openVideo(v.dataset.video); }
   });
   on(burger, 'click', () => { const o = !mn.classList.contains('open'); mn.classList.toggle('open', o); document.body.classList.toggle('menu-open', o); burger.setAttribute('aria-expanded', o); if (lenis) o ? lenis.stop() : lenis.start(); });
-  let lastY = 0;
+  let maxH = 1, fabsAway = null;
+  const fabs = $$('.fab');
+  const measure = () => { maxH = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+  measure(); on(window, 'resize', measure); on(window, 'load', measure);
+  let mt = 0; if (window.ResizeObserver) { const ro = new ResizeObserver(() => { clearTimeout(mt); mt = setTimeout(() => idle(measure), 400); }); ro.observe(document.body); later(() => { ro.disconnect(); clearTimeout(mt); }); }
   const onScroll = () => {
-    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
-    prog.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-    lastY = y;
-    $$('.fab').forEach(f => f.classList.toggle('away', y < innerHeight * .5));
+    const y = scrollY;
+    prog.style.transform = `scaleX(${Math.min(1, y / maxH)})`;
+    const away = y < innerHeight * .5;
+    if (away !== fabsAway) { fabsAway = away; fabs.forEach(f => f.classList.toggle('away', away)); }
   };
   let tk = 0; on(window, 'scroll', () => { if (!tk) tk = requestAnimationFrame(() => { tk = 0; onScroll(); }); }, { passive: true }); onScroll();
   initMonitor();
@@ -2798,14 +2812,14 @@ function initLab(c) {
     }
   };
   const swap = i => {
-    if (i === cur) return; cur = i;
+    if (i === cur) return; cur = i; first = false;
     if (!G || RM) { mount(i); return; }
     G.timeline().set(wipe, { scaleX: 0, transformOrigin: '0 50%' }).to(wipe, { scaleX: 1, duration: .4, ease: 'power3.in' }).add(() => mount(i)).set(wipe, { transformOrigin: '100% 50%' }).to(wipe, { scaleX: 0, duration: .5, ease: 'power3.out' });
   };
   tabs.forEach((t, k) => on(t, 'click', () => swap(k)));
   labSwap = swap;
-  cur = 0; mount(0);
-  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (ctrl) vis ? ctrl.play() : ctrl.pause(); }, { threshold: .15 });
+  let first = true;
+  const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && first) { first = false; cur = 0; mount(0); return; } if (ctrl) vis ? ctrl.play() : ctrl.pause(); }, { threshold: .05, rootMargin: '200px 0px' });
   io.observe(stage); later(() => { io.disconnect(); if (ctrl) try { ctrl.destroy(); } catch (e) {} });
 }
 /* ---- CPR trainer ---- */
@@ -3161,36 +3175,36 @@ function initLifeline() {
   const main = $('#main'); let svg = $('#lifeline');
   if (!svg) { main.insertAdjacentHTML('afterbegin', `<svg id="lifeline" aria-hidden="true"><defs><linearGradient id="llg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8B040"/><stop offset=".5" stop-color="#4B58E0"/><stop offset="1" stop-color="#F8B040"/></linearGradient></defs><path class="lb0"/><path class="lb1"/><g class="head"><circle r="6" fill="#F8B040"/><circle r="12" fill="none" stroke="#F8B040" stroke-opacity=".5"/></g></svg>`); svg = $('#lifeline'); }
   main.style.position = 'relative';
-  const p0 = $('.lb0', svg), p1 = $('.lb1', svg), head = $('.head', svg);
-  let samples = [], total = 0;
+  if (!$('#llclip', svg)) { $('defs', svg).insertAdjacentHTML('beforeend', '<clipPath id="llclip"><rect id="llrect" x="0" y="0" width="100%" height="0"/></clipPath>'); p1Clip(); }
+  function p1Clip() { $('.lb1', svg).setAttribute('clip-path', 'url(#llclip)'); }
+  const p0 = $('.lb0', svg), p1 = $('.lb1', svg), head = $('.head', svg), rect = $('#llrect', svg);
+  // runs: [{y0, y1, x}] vertical stretches; the line is revealed by a clip rectangle (no path measuring = no lag)
+  let runs = [], mainTop = 0, H = 0, W = 0;
   const build = () => {
-    const W = main.clientWidth, H = main.scrollHeight; svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.style.height = H + 'px';
-    const secs = $$(':scope > section', main), mTop = main.getBoundingClientRect().top + scrollY;
+    W = main.clientWidth; H = main.scrollHeight; svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.style.height = H + 'px';
+    mainTop = main.getBoundingClientRect().top + scrollY;
+    const ys = $$(':scope > section', main).slice(1).map(s => s.getBoundingClientRect().top + scrollY - mainTop);
     const edgeL = Math.max(8, W * .025), edgeR = W - edgeL;
-    let side = 0, d = `M ${W / 2} ${innerHeight * .92}`, x = W / 2;
-    secs.forEach((s, i) => {
-      if (i === 0) return;
-      const y = s.getBoundingClientRect().top + scrollY - mTop;
+    let side = 0, y0 = innerHeight * .92, x = W / 2, d = `M ${x} ${y0}`; runs = [];
+    ys.forEach(y => {
       const tx = side ? edgeR : edgeL;
+      runs.push({ y0, y1: y, x });
       d += ` L ${x} ${y - 40} Q ${x} ${y} ${x + (tx - x) * .15} ${y}`;
       const mid = (x + tx) / 2, dir = tx > x ? 1 : -1;
       d += ` L ${mid - dir * 40} ${y} l ${dir * 10} -14 l ${dir * 12} 38 l ${dir * 12} -52 l ${dir * 10} 34 l ${dir * 6} -6 L ${tx} ${y}`;
-      x = tx; side = 1 - side;
+      x = tx; side = 1 - side; y0 = y;
     });
+    runs.push({ y0, y1: H - 40, x });
     d += ` L ${x} ${H - 40}`;
     p0.setAttribute('d', d); p1.setAttribute('d', d);
-    total = p1.getTotalLength(); p1.style.strokeDasharray = total;
-    samples = []; for (let L = 0; L <= total; L += 24) { const pt = p1.getPointAtLength(L); samples.push([L, pt.y, pt.x]); }
     update();
   };
   const update = () => {
-    if (!samples.length) return;
-    const target = scrollY - (main.getBoundingClientRect().top + scrollY) + innerHeight * .7;
-    let lo = 0, hi = samples.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (samples[m][1] <= target) lo = m; else hi = m - 1; }
-    // advance through horizontal runs at the same y
-    while (lo < samples.length - 1 && samples[lo + 1][1] <= target) lo++;
-    const [L, y, xx] = samples[lo];
-    p1.style.strokeDashoffset = total - L; head.setAttribute('transform', `translate(${xx},${y})`);
+    if (!runs.length) return;
+    const target = Math.max(0, scrollY - mainTop + innerHeight * .7);
+    rect.setAttribute('height', target + 60);
+    const r = runs.find(q => target <= q.y1) || runs[runs.length - 1];
+    head.setAttribute('transform', `translate(${r.x},${Math.min(target, r.y1)})`);
   };
   build();
   let tk = 0; on(window, 'scroll', () => { if (!tk) tk = requestAnimationFrame(() => { tk = 0; update(); }); }, { passive: true });
@@ -3324,6 +3338,7 @@ function preloader() {
   return new Promise(res => {
     const pre = $('#pre');
     $('.pmark', pre).innerHTML = mark('', BLUE_D);
+    pre.classList.add('go');
     const quick = sessionStorage.getItem('fa-seen') || RM || !G;
     try { sessionStorage.setItem('fa-seen', 1); } catch (e) {}
     if (!G) { document.documentElement.classList.add('loaded'); res(); return; }
@@ -3351,15 +3366,18 @@ async function boot() {
     document.documentElement.classList.add('loaded');
     addEventListener('message', e => { if (e.data && e.data.type === 'fa:content' && e.data.content) { const y = scrollY; C = e.data.content; render(C); scrollTo(0, y); } if (e.data && e.data.type === 'fa:scrollTo') { const el = document.getElementById(e.data.target); el && el.scrollIntoView({ behavior: 'smooth' }); } });
   }
-  const loading = PREVIEW ? Promise.resolve() : preloader();
   try { const r = await fetch('content.json', { cache: 'no-cache' }); if (!r.ok) throw new Error(r.status); C = await r.json(); }
   catch (e) { document.documentElement.classList.add('loaded'); $('#app').innerHTML = `<div class="err-box"><div><h2 style="margin-bottom:12px">${mark('', BLUE_D).replace('class="mark', 'style="width:80px;margin:0 auto 20px" class="mark')}First Aid Centre of Sweden</h2><p class="muted">The content file could not be loaded. If you opened index.html by double-clicking, please open it through a web server or the live site instead.</p></div></div>`; return; }
   initLenis(); initCursor();
   render(C);
+  void document.documentElement.offsetHeight; // finish the first full-page layout before the intro animates
+  await new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
+  const loading = PREVIEW ? Promise.resolve() : preloader();
   if (PREVIEW && parent !== window) parent.postMessage({ type: 'fa:ready' }, '*');
   const vm = location.hash.match(/^#verify=(.+)$/); if (vm) setTimeout(() => openVerify(C, decodeURIComponent(vm[1])), PREVIEW ? 0 : 1800);
-  await loading;
-  if (ST) ST.refresh();
+  const heroImg = $('.himg img');
+  await Promise.all([loading, heroImg && heroImg.decode ? Promise.race([heroImg.decode().catch(() => {}), new Promise(r => setTimeout(r, 1500))]) : 0]);
+  setTimeout(() => { introDone = true; if (pendingRest) pendingRest(); }, PREVIEW ? 0 : 950);
 }
 window.FASite = { render: c => { C = c; render(c); }, get content() { return C; } };
 boot();
