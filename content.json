@@ -91,6 +91,182 @@
       "target": "lab"
     }
   },
+  "quiz": {
+    "enabled": true,
+    "eyebrow": "Readiness test",
+    "title": "Could you save a life right now?",
+    "text": "10 real emergencies. 30 seconds each. Harder than you think.",
+    "button": "Take the test",
+    "passMark": 8,
+    "secondsPerQuestion": 30,
+    "disclaimer": "For awareness only. This test is not a qualification and does not replace hands-on certified training. In an emergency in Bangladesh, call 999.",
+    "results": [
+      {
+        "minScore": 0,
+        "title": "Not ready yet.",
+        "text": "These mistakes are common, and every one of them can be trained away. One course could change what happens next time."
+      },
+      {
+        "minScore": 5,
+        "title": "Some instincts, some gaps.",
+        "text": "You know part of it. In a real emergency, the gaps are what matter. Close them with hands-on practice."
+      },
+      {
+        "minScore": 8,
+        "title": "Ready to help.",
+        "text": "Strong knowledge. Now train your hands, so it works under pressure too."
+      },
+      {
+        "minScore": 10,
+        "title": "Outstanding.",
+        "text": "A perfect score. Keep your skills fresh, and bring your team with you."
+      }
+    ],
+    "questions": [
+      {
+        "type": "choice",
+        "scene": "gasp",
+        "after": "cpr",
+        "question": "A colleague collapses. They do not respond, but they are making slow, snoring gasps. What is happening?",
+        "options": [
+          "They are breathing, so roll them onto their side and watch them",
+          "Treat it as cardiac arrest: call 999 and start CPR",
+          "They fainted, so raise their legs and wait",
+          "They are choking, so give back blows"
+        ],
+        "correct": 2,
+        "explain": "Gasping is not normal breathing. In someone who does not respond, slow, laboured or gasping breaths are signs of cardiac arrest.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "truefalse",
+        "scene": "phone",
+        "after": "cpr",
+        "question": "You are alone with someone who does not respond. You should call 999 BEFORE you check whether their breathing is normal.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "correct": 1,
+        "explain": "True. The 2025 guidance says to start the call first, then check breathing while you wait for an answer.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "choice",
+        "scene": "bleed",
+        "after": "bleeding",
+        "question": "Blood is pouring from a deep forearm wound and firm pressure is not stopping it. You have a tourniquet. Where does it go?",
+        "options": [
+          "Directly over the wound",
+          "Over the elbow joint, as tight as possible",
+          "5–7 cm above the wound, not over a joint",
+          "Below the wound, near the wrist"
+        ],
+        "correct": 3,
+        "explain": "Place it 5–7 cm above the injury and never over a joint. Write down the time, and leave it on: only a healthcare professional should release it.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "truefalse",
+        "scene": "scald",
+        "after": "burns",
+        "question": "A child was scalded two hours ago and nothing was done. It is still worth cooling the burn under running water for 20 minutes.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "correct": 1,
+        "explain": "True. Cool it as soon as possible, but cooling is still recommended up to 3 hours after the burn. No ice, toothpaste, oil or butter.",
+        "source": "NHS (UK)"
+      },
+      {
+        "type": "choice",
+        "scene": "choke",
+        "after": "cpr",
+        "question": "A man is choking. Back blows and abdominal thrusts fail, and he becomes unresponsive. What now?",
+        "options": [
+          "Sweep his mouth with your finger",
+          "Keep giving abdominal thrusts on the ground",
+          "Give him water to wash it down",
+          "Start CPR and make sure 999 has been called"
+        ],
+        "correct": 4,
+        "explain": "Once he is unresponsive, start CPR. Never sweep blindly with a finger: it can push the object deeper.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "choice",
+        "scene": "seizure",
+        "after": "recovery",
+        "question": "Someone is having a seizure on the pavement. What should you do?",
+        "options": [
+          "Put a spoon between their teeth",
+          "Protect their head, clear the space and time it",
+          "Hold their arms and legs still",
+          "Make them smell a shoe or splash water"
+        ],
+        "correct": 2,
+        "explain": "Never put anything in the mouth and never hold them down. Time it, and call for help if it lasts longer than 5 minutes.",
+        "source": "CDC (USA)"
+      },
+      {
+        "type": "choice",
+        "scene": "drown",
+        "after": "cpr",
+        "question": "You pull a child from a pond. They do not respond and are not breathing. What comes first?",
+        "options": [
+          "Five rescue breaths, then start CPR",
+          "Press the stomach to push the water out",
+          "Hold them upside down",
+          "Chest compressions only, no breaths"
+        ],
+        "correct": 1,
+        "explain": "Drowning starves the body of oxygen, so give five rescue breaths immediately, then continue with CPR.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "choice",
+        "scene": "snake",
+        "after": "",
+        "question": "A farmer is bitten on the foot by a snake. What helps most on the way to hospital?",
+        "options": [
+          "Tie a tight cord above the bite",
+          "Cut the bite and suck out the venom",
+          "Keep the limb still and take off rings and anklets",
+          "Run to the clinic as fast as possible"
+        ],
+        "correct": 3,
+        "explain": "Keep the person and the limb still, remove anything tight, and get them to hospital quickly. Never use a tight tourniquet, cut or suck.",
+        "source": "WHO"
+      },
+      {
+        "type": "truefalse",
+        "scene": "finger",
+        "after": "",
+        "question": "A worker’s fingertip is cut off. You should put the fingertip straight onto ice to save it.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "correct": 2,
+        "explain": "False. Control the bleeding first. Wrap the part in a clean, moist cloth, seal it in a bag, and put that bag inside another bag of ice. It must not touch ice directly.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      },
+      {
+        "type": "truefalse",
+        "scene": "sugar",
+        "after": "recovery",
+        "question": "A person with diabetes is unresponsive. Pouring juice or rubbing sugar into their mouth could save them.",
+        "options": [
+          "True",
+          "False"
+        ],
+        "correct": 2,
+        "explain": "False. Someone who is unresponsive can choke on it. Call 999 and consider the recovery position. Sugar by mouth is only for someone awake who can swallow.",
+        "source": "Resuscitation Council UK, Guidelines 2025"
+      }
+    ]
+  },
   "marquee": {
     "title": "Organisations we've worked with",
     "items": [
